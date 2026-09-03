@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@media print {
+  /* Hide interactive non-printable elements */
+  button,
+  .no-print,
+  nav,
+  header,
+  footer,
+  .subtab-navigation,
+  input[type="file"],
+  .search-filter {
+    display: none !important;
+  }
+
+  body {
+    background-color: white !important;
+    color: black !important;
+    font-size: 11pt !important;
+  }
+
+  .printable-area {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Page breaks */
+  .page-break {
+    page-break-before: always;
+  }
+
+  /* Ensure text is black and crisp for printing */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "MODUL BK KELAS 7",
+  "description": "Media Pembelajaran Interaktif Bimbingan Konseling Kelas 7 dengan RPP Mendalam, Kuisioner Diagnostik, Video Interaktif, Materi Animasi, Latihan 30 Soal, Kuis TTS & Ular Tangga, serta Absensi 8 Rombel.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
