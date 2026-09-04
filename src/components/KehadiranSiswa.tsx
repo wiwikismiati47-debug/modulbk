@@ -14,13 +14,13 @@ export const KehadiranSiswa: React.FC<KehadiranSiswaProps> = ({
   onDeleteRecord
 }) => {
   const [nama, setNama] = useState('');
-  const [rombel, setRombel] = useState('7.1');
+  const [rombel, setRombel] = useState('7A');
   const [status, setStatus] = useState<'Hadir' | 'Izin' | 'Sakit' | 'Alpa'>('Hadir');
   const [catatan, setCatatan] = useState('');
   const [filterRombel, setFilterRombel] = useState('Semua');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const rombelList = ['7.1', '7.2', '7.3', '7.4', '7.5', '7.6', '7.7', '7.8'];
+  const rombelList = ['7A', '7B', '7C', '7D', '7E', '7F', '7G', '7H'];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +67,7 @@ export const KehadiranSiswa: React.FC<KehadiranSiswaProps> = ({
         </div>
         <h1 className="text-3xl font-extrabold tracking-tight">Kehadiran Siswa (8 Rombel)</h1>
         <p className="text-emerald-100 text-sm max-w-2xl">
-          Silakan isi daftar kehadiranmu sesuai dengan kelas (rombel) masing-masing (7.1 sampai 7.8) pada setiap sesi layanan BK.
+          Silakan isi daftar kehadiranmu sesuai dengan kelas (rombel) masing-masing (7A sampai 7H) pada setiap sesi layanan BK.
         </p>
       </div>
 
@@ -98,7 +98,7 @@ export const KehadiranSiswa: React.FC<KehadiranSiswaProps> = ({
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 uppercase">Pilih Rombel / Kelas (7.1 - 7.8)</label>
+              <label className="text-xs font-bold text-slate-700 uppercase">Pilih Rombel / Kelas (7A - 7H)</label>
               <select
                 value={rombel}
                 onChange={(e) => setRombel(e.target.value)}
@@ -106,7 +106,7 @@ export const KehadiranSiswa: React.FC<KehadiranSiswaProps> = ({
               >
                 {rombelList.map((r) => (
                   <option key={r} value={r}>
-                    Kelas 7.{r}
+                    Kelas {r}
                   </option>
                 ))}
               </select>
@@ -188,7 +188,7 @@ export const KehadiranSiswa: React.FC<KehadiranSiswaProps> = ({
                 <option value="Semua">Semua Rombel</option>
                 {rombelList.map((r) => (
                   <option key={r} value={r}>
-                    Kelas 7.{r}
+                    Kelas {r}
                   </option>
                 ))}
               </select>
@@ -218,7 +218,7 @@ export const KehadiranSiswa: React.FC<KehadiranSiswaProps> = ({
                       <td className="py-3 px-4 font-bold text-slate-900">{rec.nama}</td>
                       <td className="py-3 px-4">
                         <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700">
-                          Kelas 7.{rec.rombel}
+                          Kelas {rec.rombel}
                         </span>
                       </td>
                       <td className="py-3 px-4">

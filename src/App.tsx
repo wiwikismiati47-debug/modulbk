@@ -1,39 +1,152 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Beranda } from './components/Beranda';
 import { Dashboard } from './components/Dashboard';
 import { KehadiranSiswa } from './components/KehadiranSiswa';
 import { ModuleDetail } from './components/ModuleDetail';
+import { SupabaseModal } from './components/SupabaseModal';
 import { modulesData } from './data/modulesData';
-import { AttendanceRecord } from './types';
+import { AttendanceRecord, Student, StudentGradeRecord } from './types';
+import {
+  getInitialAttendanceLocal,
+  saveAttendanceLocal,
+  getInitialStudentsLocal,
+  saveStudentsLocal,
+  getInitialGradesLocal,
+  saveGradesLocal,
+  fetchAttendanceCloud,
+  syncAttendanceToCloud,
+  deleteAttendanceFromCloud,
+  fetchStudentsCloud,
+  syncStudentToCloud,
+  syncBulkStudentsToCloud,
+  deleteStudentFromCloud,
+  fetchGradesCloud,
+  syncGradeToCloud,
+  deleteGradeFromCloud,
+  isSupabaseConnected
+} from './lib/supabase';
+import { Database, Home, LayoutDashboard, Users, Cloud, CloudCheck } from 'lucide-react';
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<string>('beranda');
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
+  const [isSupabaseModalOpen, setIsSupabaseModalOpen] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'synced' | 'local'>('idle');
 
-  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>([
-    { id: '1', nama: 'Ahmad Fauzan', rombel: '7.1', status: 'Hadir', waktu: 'Senin, 08:00', catatan: 'Tepat waktu' },
-    { id: '2', nama: 'Siti Aisyah', rombel: '7.2', status: 'Hadir', waktu: 'Senin, 08:05', catatan: 'Aktif diskusi' },
-    { id: '3', nama: 'Budi Santoso', rombel: '7.3', status: 'Sakit', waktu: 'Selasa, 09:10', catatan: 'Surat dokter terlampir' },
-    { id: '4', nama: 'Dewi Lestari', rombel: '7.4', status: 'Hadir', waktu: 'Rabu, 07:50', catatan: 'Sangat antusias' },
-    { id: '5', nama: 'Rian Pratama', rombel: '7.5', status: 'Izin', waktu: 'Kamis, 08:15', catatan: 'Acara keluarga' },
-    { id: '6', nama: 'Maya Sari', rombel: '7.6', status: 'Hadir', waktu: 'Jumat, 08:00', catatan: 'Hadir lengkap' },
-    { id: '7', nama: 'Dimas Anggara', rombel: '7.7', status: 'Hadir', waktu: 'Sabtu, 08:10', catatan: 'Aktif kuis' },
-    { id: '8', nama: 'Intan Permata', rombel: '7.8', status: 'Hadir', waktu: 'Sabtu, 08:12', catatan: 'Sangat baik' }
-  ]);
+  // Local first state initialization
+  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>(getInitialAttendanceLocal);
+  const [students, setStudents] = useState<Student[]>(getInitialStudentsLocal);
+  const [gradeRecords, setGradeRecords] = useState<StudentGradeRecord[]>(getInitialGradesLocal);
 
+  // Load Cloud Data if Supabase is connected
+  const loadCloudData = async () => {
+    if (!isSupabaseConnected()) {
+      setSyncStatus('local');
+      return;
+    }
+
+    setSyncStatus('syncing');
+    try {
+      const [cloudAttendance, cloudStudents, cloudGrades] = await Promise.all([
+        fetchAttendanceCloud(),
+        fetchStudentsCloud(),
+        fetchGradesCloud()
+      ]);
+
+      if (cloudAttendance && cloudAttendance.length > 0) {
+        setAttendanceRecords(cloudAttendance);
+        saveAttendanceLocal(cloudAttendance);
+      }
+      if (cloudStudents && cloudStudents.length > 0) {
+        setStudents(cloudStudents);
+        saveStudentsLocal(cloudStudents);
+      }
+      if (cloudGrades && cloudGrades.length > 0) {
+        setGradeRecords(cloudGrades);
+        saveGradesLocal(cloudGrades);
+      }
+      setSyncStatus('synced');
+    } catch (e) {
+      console.error('Failed loading cloud data:', e);
+      setSyncStatus('local');
+    }
+  };
+
+  useEffect(() => {
+    loadCloudData();
+  }, []);
+
+  // Attendance Handlers
   const handleAddAttendance = (record: AttendanceRecord) => {
-    setAttendanceRecords(prev => [record, ...prev]);
+    const updated = [record, ...attendanceRecords];
+    setAttendanceRecords(updated);
+    saveAttendanceLocal(updated);
+    syncAttendanceToCloud(record);
   };
 
   const handleDeleteAttendance = (id: string) => {
-    setAttendanceRecords(prev => prev.filter(r => r.id !== id));
+    const updated = attendanceRecords.filter(r => r.id !== id);
+    setAttendanceRecords(updated);
+    saveAttendanceLocal(updated);
+    deleteAttendanceFromCloud(id);
+  };
+
+  // Student Handlers
+  const handleAddStudent = (student: Student) => {
+    const updated = [student, ...students];
+    setStudents(updated);
+    saveStudentsLocal(updated);
+    syncStudentToCloud(student);
+  };
+
+  const handleUpdateStudent = (updatedStudent: Student) => {
+    const updated = students.map(s => s.id === updatedStudent.id ? updatedStudent : s);
+    setStudents(updated);
+    saveStudentsLocal(updated);
+    syncStudentToCloud(updatedStudent);
+  };
+
+  const handleDeleteStudent = (id: string) => {
+    const updated = students.filter(s => s.id !== id);
+    setStudents(updated);
+    saveStudentsLocal(updated);
+    deleteStudentFromCloud(id);
+  };
+
+  const handleImportStudents = (newStudents: Student[]) => {
+    const updated = [...newStudents, ...students];
+    setStudents(updated);
+    saveStudentsLocal(updated);
+    syncBulkStudentsToCloud(newStudents);
+  };
+
+  // Student Grade Handlers
+  const handleAddGrade = (record: StudentGradeRecord) => {
+    const updated = [record, ...gradeRecords];
+    setGradeRecords(updated);
+    saveGradesLocal(updated);
+    syncGradeToCloud(record);
+  };
+
+  const handleUpdateGrade = (updatedRecord: StudentGradeRecord) => {
+    const updated = gradeRecords.map(g => g.id === updatedRecord.id ? updatedRecord : g);
+    setGradeRecords(updated);
+    saveGradesLocal(updated);
+    syncGradeToCloud(updatedRecord);
+  };
+
+  const handleDeleteGrade = (id: string) => {
+    const updated = gradeRecords.filter(g => g.id !== id);
+    setGradeRecords(updated);
+    saveGradesLocal(updated);
+    deleteGradeFromCloud(id);
   };
 
   const selectedModule = modulesData.find(m => m.id === selectedModuleId);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-['Plus_Jakarta_Sans',sans-serif] pb-16 sm:pb-0">
       <Navbar
         currentTab={currentTab}
         setCurrentTab={(tab) => {
@@ -43,9 +156,30 @@ export default function App() {
         }}
         selectedModuleId={selectedModuleId}
         setSelectedModuleId={setSelectedModuleId}
+        onOpenSupabaseModal={() => setIsSupabaseModalOpen(true)}
       />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
+      {/* Cloud Sync Notification Bar */}
+      <div className="bg-slate-900 text-slate-200 text-xs py-2 px-4 border-b border-slate-800 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span className="font-semibold text-emerald-400">Penyimpanan Otomatis HP & Laptop:</span>
+            <span className="text-slate-300 hidden sm:inline">
+              {isSupabaseConnected() ? 'Terhubung ke Supabase Cloud (Tersimpan Secara Realtime)' : 'Penyimpanan Perangkat Aktif (Tersimpan di HP & Laptop)'}
+            </span>
+          </div>
+          <button
+            onClick={() => setIsSupabaseModalOpen(true)}
+            className="text-[11px] font-bold underline hover:text-white flex items-center space-x-1"
+          >
+            <Database className="w-3 h-3 text-indigo-400" />
+            <span>{isSupabaseConnected() ? 'Pengaturan Cloud' : 'Sambungkan Supabase'}</span>
+          </button>
+        </div>
+      </div>
+
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 sm:pb-16">
         {selectedModule ? (
           <ModuleDetail
             module={selectedModule}
@@ -68,6 +202,8 @@ export default function App() {
         ) : currentTab === 'dashboard' ? (
           <Dashboard
             attendanceRecords={attendanceRecords}
+            students={students}
+            gradeRecords={gradeRecords}
             onSelectModule={(id) => {
               setSelectedModuleId(id);
               window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -76,6 +212,13 @@ export default function App() {
               setCurrentTab(tab);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
+            onAddStudent={handleAddStudent}
+            onUpdateStudent={handleUpdateStudent}
+            onDeleteStudent={handleDeleteStudent}
+            onImportStudents={handleImportStudents}
+            onAddGrade={handleAddGrade}
+            onUpdateGrade={handleUpdateGrade}
+            onDeleteGrade={handleDeleteGrade}
           />
         ) : currentTab === 'kehadiran' ? (
           <KehadiranSiswa
@@ -86,7 +229,46 @@ export default function App() {
         ) : null}
       </main>
 
-      <footer className="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-500 space-y-2">
+      {/* Floating Bottom Navigation Bar for Mobile HP View */}
+      <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2 flex items-center justify-around shadow-lg">
+        <button
+          onClick={() => { setCurrentTab('beranda'); setSelectedModuleId(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          className={`flex flex-col items-center space-y-1 p-1 ${currentTab === 'beranda' && !selectedModuleId ? 'text-indigo-600 font-extrabold' : 'text-slate-500 font-semibold'}`}
+        >
+          <Home className="w-5 h-5" />
+          <span className="text-[10px]">Beranda</span>
+        </button>
+        <button
+          onClick={() => { setCurrentTab('dashboard'); setSelectedModuleId(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          className={`flex flex-col items-center space-y-1 p-1 ${currentTab === 'dashboard' && !selectedModuleId ? 'text-indigo-600 font-extrabold' : 'text-slate-500 font-semibold'}`}
+        >
+          <LayoutDashboard className="w-5 h-5" />
+          <span className="text-[10px]">Dashboard</span>
+        </button>
+        <button
+          onClick={() => { setCurrentTab('kehadiran'); setSelectedModuleId(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          className={`flex flex-col items-center space-y-1 p-1 ${currentTab === 'kehadiran' && !selectedModuleId ? 'text-indigo-600 font-extrabold' : 'text-slate-500 font-semibold'}`}
+        >
+          <Users className="w-5 h-5" />
+          <span className="text-[10px]">Kehadiran</span>
+        </button>
+        <button
+          onClick={() => setIsSupabaseModalOpen(true)}
+          className="flex flex-col items-center space-y-1 p-1 text-emerald-600 font-semibold"
+        >
+          <Database className="w-5 h-5" />
+          <span className="text-[10px]">Cloud Data</span>
+        </button>
+      </nav>
+
+      {/* Modal Setup Supabase */}
+      <SupabaseModal
+        isOpen={isSupabaseModalOpen}
+        onClose={() => setIsSupabaseModalOpen(false)}
+        onSyncRefresh={loadCloudData}
+      />
+
+      <footer className="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-500 space-y-2 mb-12 sm:mb-0">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-2">
             <span className="font-bold text-indigo-900">MODUL BK KELAS 7</span>
@@ -98,3 +280,4 @@ export default function App() {
     </div>
   );
 }
+

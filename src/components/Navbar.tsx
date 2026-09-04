@@ -1,20 +1,24 @@
 import React from 'react';
-import { Home, LayoutDashboard, Users, BookOpen, Menu, X, Sparkles } from 'lucide-react';
+import { Home, LayoutDashboard, Users, BookOpen, Menu, X, Sparkles, Database, CheckCircle2 } from 'lucide-react';
+import { isSupabaseConnected } from '../lib/supabase';
 
 interface NavbarProps {
   currentTab: string;
   setCurrentTab: (tab: string) => void;
   selectedModuleId: string | null;
   setSelectedModuleId: (id: string | null) => void;
+  onOpenSupabaseModal: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   currentTab,
   setCurrentTab,
   selectedModuleId,
-  setSelectedModuleId
+  setSelectedModuleId,
+  onOpenSupabaseModal
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const supabaseActive = isSupabaseConnected();
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-indigo-100 shadow-sm">
@@ -95,17 +99,36 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <div className="h-6 w-px bg-slate-200 mx-2"></div>
 
-            <div className="flex items-center space-x-1 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-100">
-              <Sparkles className="w-4 h-4 text-indigo-600 animate-pulse" />
-              <span className="text-xs font-bold text-indigo-900">8 Modul Mendalam</span>
-            </div>
+            {/* Supabase Storage Button */}
+            <button
+              onClick={onOpenSupabaseModal}
+              className={`flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-bold transition-all border ${
+                supabaseActive 
+                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100' 
+                  : 'bg-indigo-50 text-indigo-900 border-indigo-200 hover:bg-indigo-100'
+              }`}
+              title="Kelola Penyimpanan Otomatis Supabase Cloud"
+            >
+              <Database className={`w-3.5 h-3.5 ${supabaseActive ? 'text-emerald-600' : 'text-indigo-600'}`} />
+              <span>{supabaseActive ? 'Supabase Sync' : 'Simpan di Supabase'}</span>
+              <span className={`w-2 h-2 rounded-full ${supabaseActive ? 'bg-emerald-500 animate-pulse' : 'bg-amber-400'}`} />
+            </button>
           </nav>
 
           {/* Mobile menu button */}
-          <div className="flex md:hidden">
+          <div className="flex items-center space-x-2 md:hidden">
+            <button
+              onClick={onOpenSupabaseModal}
+              className={`p-2 rounded-xl border text-xs font-bold flex items-center space-x-1 ${
+                supabaseActive ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-indigo-50 text-indigo-900 border-indigo-200'
+              }`}
+            >
+              <Database className="w-4 h-4 text-emerald-600" />
+              <span className="hidden sm:inline">{supabaseActive ? 'Supabase' : 'Database'}</span>
+            </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-slate-600 hover:bg-slate-100"
+              className="p-2 rounded-xl text-slate-600 hover:bg-slate-100 border border-slate-200"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -134,17 +157,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             <LayoutDashboard className="w-5 h-5" />
             <span>Dashboard</span>
           </button>
-          <button
-            onClick={() => { setCurrentTab('kehadiran'); setSelectedModuleId(null); setMobileMenuOpen(false); }}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold ${
-              currentTab === 'kehadiran' && !selectedModuleId ? 'bg-indigo-600 text-white' : 'text-slate-700 hover:bg-slate-100'
-            }`}
-          >
-            <Users className="w-5 h-5" />
-            <span>Kehadiran Siswa (8 Rombel)</span>
-          </button>
         </div>
       )}
     </header>
   );
 };
+

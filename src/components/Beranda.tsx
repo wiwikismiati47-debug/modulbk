@@ -25,7 +25,7 @@ export const Beranda: React.FC<BerandaProps> = ({ onSelectModule, onNavigateTab 
           </h1>
 
           <p className="text-lg sm:text-xl text-indigo-100 font-normal leading-relaxed">
-            Platform bimbingan dan konseling digital terpadu untuk mendampingi masa transisi peserta didik kelas 7 SMP/MTs. Dilengkapi RPP Mendalam, Asesmen Diagnostik, Materi Animasi, 30 Soal Evaluasi, Kuis TTS & Ular Tangga, serta Absensi 8 Rombel.
+            Platform bimbingan dan konseling digital terpadu untuk mendampingi masa transisi peserta didik kelas 7 SMP/MTs. Dilengkapi RPP Mendalam, Asesmen Diagnostik, Materi Animasi, 30 Soal Evaluasi, Kuis TTS & Ular Tangga, serta Absensi 8 Rombel (7A s.d 7H).
           </p>
 
           <div className="flex flex-wrap gap-4 pt-4">
@@ -70,7 +70,7 @@ export const Beranda: React.FC<BerandaProps> = ({ onSelectModule, onNavigateTab 
           </div>
           <div>
             <div className="text-2xl font-black text-slate-900">8 Rombel</div>
-            <div className="text-xs font-semibold text-slate-500">Kelas 7.1 s.d 7.8</div>
+            <div className="text-xs font-semibold text-slate-500">Kelas 7A s.d 7H</div>
           </div>
         </div>
 

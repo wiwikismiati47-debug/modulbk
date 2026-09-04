@@ -119,3 +119,26 @@ export interface AttendanceRecord {
   waktu: string;
   catatan?: string;
 }
+
+export interface Student {
+  id: string;
+  nisn: string;
+  nama: string;
+  kelas: string; // e.g. '7A', '7B', '8A', '9H', etc.
+  jenisKelamin: 'L' | 'P';
+  noAbsen: number;
+}
+
+export interface StudentGradeRecord {
+  id: string;
+  hari: string; // e.g. 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+  tanggal: string; // YYYY-MM-DD
+  namaSiswa: string;
+  kelas: string;
+  tugas1: string; // Isi manual materi & nilai Tugas 1
+  tugas2: string; // Isi manual materi & nilai Tugas 2
+  tugasProyek: string; // Isi manual materi & nilai Tugas Proyek
+  kriteriaNilai: 'A' | 'B' | 'C'; // A = Tepat waktu & jawaban benar, B = Tidak tepat waktu & ada kesalahan, C = Perlu Bimbingan Ulang
+  catatanGuru?: string;
+}
+
