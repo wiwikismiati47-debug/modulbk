@@ -5,6 +5,8 @@ import { Dashboard } from './components/Dashboard';
 import { KehadiranSiswa } from './components/KehadiranSiswa';
 import { ModuleDetail } from './components/ModuleDetail';
 import { SupabaseModal } from './components/SupabaseModal';
+import { OfflineIndicator } from './components/OfflineIndicator';
+import { PWAInstallModal } from './components/PWAInstallModal';
 import { modulesData } from './data/modulesData';
 import { AttendanceRecord, Student, StudentGradeRecord } from './types';
 import {
@@ -26,12 +28,13 @@ import {
   deleteGradeFromCloud,
   isSupabaseConnected
 } from './lib/supabase';
-import { Database, Home, LayoutDashboard, Users, Cloud, CloudCheck } from 'lucide-react';
+import { Database, Home, LayoutDashboard, Users, Cloud, CloudCheck, Download } from 'lucide-react';
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<string>('beranda');
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
   const [isSupabaseModalOpen, setIsSupabaseModalOpen] = useState(false);
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'synced' | 'local'>('idle');
 
   // Local first state initialization
@@ -259,6 +262,14 @@ export default function App() {
           <Database className="w-5 h-5" />
           <span className="text-[10px]">Cloud Data</span>
         </button>
+        <button
+          onClick={() => setIsInstallModalOpen(true)}
+          className="flex flex-col items-center space-y-1 p-1 text-indigo-700 font-semibold"
+          title="Pasang di HP / Laptop"
+        >
+          <Download className="w-5 h-5 text-indigo-600" />
+          <span className="text-[10px]">Install</span>
+        </button>
       </nav>
 
       {/* Modal Setup Supabase */}
@@ -268,13 +279,31 @@ export default function App() {
         onSyncRefresh={loadCloudData}
       />
 
+      {/* Modal PWA Install Guide */}
+      <PWAInstallModal
+        isOpen={isInstallModalOpen}
+        onClose={() => setIsInstallModalOpen(false)}
+      />
+
+      {/* Offline Status Indicator */}
+      <OfflineIndicator />
+
       <footer className="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-500 space-y-2 mb-12 sm:mb-0">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-2">
             <span className="font-bold text-indigo-900">MODUL BK KELAS 7</span>
             <span>• Media Pembelajaran Interaktif & Kurikulum Merdeka</span>
           </div>
-          <p>© 2026 SMP Negeri 7 Pasuruan. Hak Cipta Dilindungi.</p>
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => setIsInstallModalOpen(true)}
+              className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-indigo-50 text-indigo-700 font-bold hover:bg-indigo-100 transition-colors border border-indigo-200"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Install di Laptop & HP</span>
+            </button>
+            <p>© 2026 SMP Negeri 7 Pasuruan. Hak Cipta Dilindungi.</p>
+          </div>
         </div>
       </footer>
     </div>

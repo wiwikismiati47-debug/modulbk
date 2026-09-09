@@ -2,6 +2,7 @@ import React from 'react';
 import { modulesData } from '../data/modulesData';
 import { Sparkles, BookOpen, Users, Award, PlayCircle, ArrowRight, ShieldCheck, HeartPulse, CheckCircle2 } from 'lucide-react';
 import { PemetaanTugasTable } from './PemetaanTugasTable';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface BerandaProps {
   onSelectModule: (id: string) => void;
@@ -51,6 +52,9 @@ export const Beranda: React.FC<BerandaProps> = ({ onSelectModule, onNavigateTab 
           📚🧠💡
         </div>
       </section>
+
+      {/* PWA Install Banner for Laptop & Smartphone */}
+      <PWAInstallButton variant="banner" />
 
       {/* Stats Bar */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">

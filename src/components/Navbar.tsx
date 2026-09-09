@@ -1,6 +1,7 @@
 import React from 'react';
 import { Home, LayoutDashboard, Users, BookOpen, Menu, X, Sparkles, Database, CheckCircle2 } from 'lucide-react';
 import { isSupabaseConnected } from '../lib/supabase';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface NavbarProps {
   currentTab: string;
@@ -113,10 +114,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>{supabaseActive ? 'Supabase Sync' : 'Simpan di Supabase'}</span>
               <span className={`w-2 h-2 rounded-full ${supabaseActive ? 'bg-emerald-500 animate-pulse' : 'bg-amber-400'}`} />
             </button>
+
+            {/* Install PWA Button (Laptop / PC) */}
+            <PWAInstallButton variant="navbar" />
           </nav>
 
           {/* Mobile menu button */}
           <div className="flex items-center space-x-2 md:hidden">
+            {/* Install PWA Button (Mobile) */}
+            <PWAInstallButton variant="navbar" />
+
             <button
               onClick={onOpenSupabaseModal}
               className={`p-2 rounded-xl border text-xs font-bold flex items-center space-x-1 ${
@@ -156,6 +163,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <LayoutDashboard className="w-5 h-5" />
             <span>Dashboard</span>
+          </button>
+          <button
+            onClick={() => { setCurrentTab('kehadiran'); setSelectedModuleId(null); setMobileMenuOpen(false); }}
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold ${
+              currentTab === 'kehadiran' && !selectedModuleId ? 'bg-indigo-600 text-white' : 'text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            <Users className="w-5 h-5" />
+            <span>Kehadiran Siswa</span>
           </button>
         </div>
       )}
