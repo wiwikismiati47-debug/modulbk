@@ -16,12 +16,23 @@ import {
   HelpCircle,
   Award,
   ChevronRight,
-  Info
+  Info,
+  ExternalLink,
+  Copy,
+  Check
 } from 'lucide-react';
 
 interface InteractiveVideoPlayerProps {
   module: ModuleContent;
 }
+
+// Helper to extract 11-char YouTube ID from any format
+const extractYoutubeId = (url: string): string | null => {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+};
 
 interface SceneData {
   id: number;
@@ -50,6 +61,40 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({ 
   const [activeDecision, setActiveDecision] = useState<SceneData['pilihanInteraktif'] | null>(null);
   const [decisionOutcome, setDecisionOutcome] = useState<{ dampak: string; isTerpuji: boolean } | null>(null);
   const [completedDecisions, setCompletedDecisions] = useState<Record<number, string>>({});
+
+  // YouTube link state
+  const defaultYoutubeUrl = module.video.youtubeUrl || (module.video.youtubeId ? `https://youtu.be/${module.video.youtubeId}` : `https://www.youtube.com/results?search_query=${encodeURIComponent(`Bimbingan Konseling SMP ${module.judul}`)}`);
+
+  const [currentYoutubeUrl, setCurrentYoutubeUrl] = useState<string>(defaultYoutubeUrl);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
+
+  useEffect(() => {
+    setCurrentYoutubeUrl(defaultYoutubeUrl);
+  }, [module.id, defaultYoutubeUrl]);
+
+  const handleCopyLink = () => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(currentYoutubeUrl);
+    }
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2500);
+  };
+
+  const getEmbedUrlFromUrl = (url: string) => {
+    const extractedId = extractYoutubeId(url);
+    if (extractedId) {
+      return `https://www.youtube-nocookie.com/embed/${extractedId}?autoplay=1&rel=0`;
+    }
+    if (url.includes('youtube-nocookie.com/embed/') || url.includes('youtube.com/embed/')) {
+      return url;
+    }
+    const query = encodeURIComponent(`Bimbingan Konseling SMP ${module.judul}`);
+    return `https://www.youtube-nocookie.com/embed?listType=search&list=${query}`;
+  };
+
+  const getYoutubeEmbedUrl = () => {
+    return getEmbedUrlFromUrl(currentYoutubeUrl);
+  };
 
   const containerRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -233,27 +278,17 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({ 
     }
   };
 
-  // Get YouTube embed URL or default educational YouTube search fallback
-  const getYoutubeEmbedUrl = () => {
-    if (module.video.youtubeId) {
-      return `https://www.youtube-nocookie.com/embed/${module.video.youtubeId}?autoplay=1&rel=0`;
-    }
-    // YouTube search embed placeholder or standard educational video embed
-    const query = encodeURIComponent(`Bimbingan Konseling SMP ${module.judul}`);
-    return `https://www.youtube-nocookie.com/embed?listType=search&list=${query}`;
-  };
-
   return (
     <div className="space-y-6">
-      {/* Tab Switcher */}
-      <div className="flex items-center justify-between bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
-        <div className="flex items-center space-x-2">
+      {/* Tab Switcher & Popup Trigger Bar */}
+      <div className="flex flex-wrap items-center justify-between bg-slate-100 p-1.5 rounded-2xl border border-slate-200 gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => {
               setActiveTab('animasi');
               if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             }}
-            className={`px-5 py-2.5 rounded-xl font-extrabold text-xs flex items-center space-x-2 transition-all ${
+            className={`px-4 sm:px-5 py-2.5 rounded-xl font-extrabold text-xs flex items-center space-x-2 transition-all ${
               activeTab === 'animasi'
                 ? 'bg-indigo-600 text-white shadow-md'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
@@ -262,13 +297,14 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({ 
             <Film className="w-4 h-4" />
             <span>🎬 Pemutar Video Animasi & Simulasi Story</span>
           </button>
+          
           <button
             onClick={() => {
               setActiveTab('youtube');
               setIsPlaying(false);
               if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             }}
-            className={`px-5 py-2.5 rounded-xl font-extrabold text-xs flex items-center space-x-2 transition-all ${
+            className={`px-4 sm:px-5 py-2.5 rounded-xl font-extrabold text-xs flex items-center space-x-2 transition-all ${
               activeTab === 'youtube'
                 ? 'bg-red-600 text-white shadow-md'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
@@ -282,6 +318,67 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({ 
         <div className="hidden md:flex items-center space-x-2 text-xs font-semibold text-slate-500 pr-3">
           <Sparkles className="w-4 h-4 text-amber-500" />
           <span>Durasi: {module.video.durasi}</span>
+        </div>
+      </div>
+
+      {/* TAUTAN LINK YOUTUBE RESMI PROMINENT BANNER */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-gradient-to-r from-red-50 via-rose-50 to-indigo-50 border border-red-200/90 rounded-2xl p-3.5 sm:px-5 sm:py-3.5 gap-3 shadow-xs">
+        <div className="flex items-center space-x-3 min-w-0">
+          <div className="w-9 h-9 rounded-xl bg-red-600 flex items-center justify-center text-white shrink-0 shadow-md shadow-red-500/30">
+            <Tv className="w-5 h-5" />
+          </div>
+          <div className="min-w-0">
+            <div className="flex items-center space-x-2 flex-wrap">
+              <span className="text-[11px] font-black uppercase text-red-700 tracking-wider">
+                Tautan Link YouTube:
+              </span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-700 border border-red-200">
+                Video Edukasi BK
+              </span>
+            </div>
+            <div className="mt-0.5 flex items-center space-x-1.5 min-w-0">
+              <a
+                href={currentYoutubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs sm:text-sm font-extrabold text-indigo-700 hover:text-red-600 underline underline-offset-2 flex items-center gap-1.5 truncate transition-colors"
+                title={`Buka ${currentYoutubeUrl} di tab baru`}
+              >
+                <span className="truncate">{currentYoutubeUrl}</span>
+                <ExternalLink className="w-3.5 h-3.5 shrink-0 inline text-slate-500" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 self-end sm:self-auto shrink-0 flex-wrap">
+          <button
+            onClick={handleCopyLink}
+            className="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-extrabold flex items-center space-x-1.5 shadow-xs active:scale-95 transition-all"
+            title="Salin Link YouTube ke Clipboard"
+          >
+            {isCopied ? (
+              <>
+                <Check className="w-4 h-4 text-emerald-600" />
+                <span className="text-emerald-600">Tersalin!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-4 h-4 text-slate-500" />
+                <span>Salin Link</span>
+              </>
+            )}
+          </button>
+
+          <a
+            href={currentYoutubeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-black flex items-center space-x-1.5 shadow-md shadow-red-600/30 active:scale-95 transition-all"
+          >
+            <Tv className="w-4 h-4" />
+            <span>Buka YouTube</span>
+          </a>
         </div>
       </div>
 
@@ -511,15 +608,17 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({ 
               <h4 className="font-extrabold text-sm text-indigo-300">{module.video.judul}</h4>
               <p className="text-xs text-slate-400 mt-0.5">Pemutar Media YouTube Edukasi BK • Durasi: {module.video.durasi}</p>
             </div>
-            <a
-              href={`https://www.youtube.com/results?search_query=${encodeURIComponent(`Bimbingan Konseling SMP ${module.judul}`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-extrabold rounded-xl transition-all shadow-md flex items-center space-x-2"
-            >
-              <Tv className="w-4 h-4" />
-              <span>Buka di Aplikasi YouTube</span>
-            </a>
+            <div className="flex flex-wrap items-center gap-2">
+              <a
+                href={currentYoutubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-extrabold rounded-xl transition-all shadow-md flex items-center space-x-2 active:scale-95"
+              >
+                <Tv className="w-4 h-4" />
+                <span>Buka di Aplikasi YouTube</span>
+              </a>
+            </div>
           </div>
         </div>
       )}

@@ -88,6 +88,7 @@ export interface ModuleContent {
     resolusiMoral: string;
     kutipanInspiratif: string;
     youtubeId?: string;
+    youtubeUrl?: string;
     adegan?: {
       id: number;
       judulAdegan: string;

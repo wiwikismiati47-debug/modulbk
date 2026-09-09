@@ -46,7 +46,7 @@ export const modulesData: ModuleContent[] = [
           praktikPedagogis: 'Pembelajaran berbasis pengalaman nyata, refleksi spiritual, analisis kasus toleransi, dan studi kasus akhlak remaja.',
           kemitraanPembelajaran: 'Kolaborasi sinergis antara Guru BK, Guru Agama, Guru PPKn, dan Orang Tua di rumah.',
           lingkunganPembelajaran: 'Suasana kelas yang kondusif, religius, hangat, toleran, dan interaktif.',
-          pemanfaatanDigital: 'Penggunaan modul interaktif berbasis web, kuis digital, poster digital Moderasi Beragama, dan video animasi moral.'
+          pemanfaatanDigital: 'Penggunaan modul interaktif berbasis web, kuis digital, poster digital Moderasi Beragama, dan video YouTube edukasi (https://youtu.be/DbdIe1lqDrY).'
         }
       },
       pelaksanaan: {
@@ -56,7 +56,7 @@ export const modulesData: ModuleContent[] = [
           menggembirakan: 'Penyampaian materi melalui kuis interaktif, permainan edukatif, diskusi sinematik, dan karya kelompok.'
         },
         pengalamanBelajar: {
-          memahami: 'Mengamati video edukasi tata cara ibadah khusyuk, contoh akhlak terpuji, dan 4 pilar Moderasi Beragama.',
+          memahami: 'Mengamati video edukasi YouTube (https://youtu.be/DbdIe1lqDrY), contoh akhlak terpuji, dan 4 pilar kerukunan pelajar.',
           mengaplikasi: 'Mempraktikkan checklist ibadah harian, simulasi penyelesaian dilema moral, dan poster kampanye toleransi.',
           merefleksi: 'Menulis jurnal harian ibadah, komitmen peningkatan diri, dan ikrar pelajar moderat berkebinekaan.'
         },
@@ -125,7 +125,9 @@ export const modulesData: ModuleContent[] = [
       durasi: '4 Menit 45 Detik',
       ceritaRealistis: 'Zaki adalah siswa kelas 7 SMPN 7 Pasuruan yang awalnya sering menunda shalat karena asyik bermain game. Setelah merenungi teladan kakeknya yang selalu khusyuk beribadah, Zaki mulai membenahi jadwal shalat dan doa harian. Di sekolah, Zaki berteman akrab dengan Danu dan Gabriel yang memiliki keragaman latar belakang. Melalui arahan Guru BK, Zaki belajar bahwa pemahaman agama yang mendalam tidak membuat seseorang menjadi pemarah atau membenci perbedaan, melainkan melahirkan pribadi yang santun, jujur, cinta damai, serta menghargai toleransi antarsesama.',
       resolusiMoral: 'Ibadah yang tulus melahirkan akhlak luhur dan ketenangan jiwa, sedangkan Moderasi Beragama mempererat persaudaraan dan kedamaian di lingkungan sekolah.',
-      kutipanInspiratif: '"Sebaik-baik manusia adalah yang paling baik akhlaknya, taat beribadah kepada Tuhan, dan menjadi pelopor kedamaian antarsesama."'
+      kutipanInspiratif: '"Sebaik-baik manusia adalah yang paling baik akhlaknya, taat beribadah kepada Tuhan, dan menjadi pelopor kedamaian antarsesama."',
+      youtubeId: 'DbdIe1lqDrY',
+      youtubeUrl: 'https://youtu.be/DbdIe1lqDrY'
     },
     materiPoin: [
       { judul: 'Hakikat & Makna Ibadah dalam Pembentukan Karakter', isi: 'Ibadah adalah wujud rasa syukur hamba kepada Tuhan Yang Maha Esa. Di usia remaja awal (transisi SD ke SMP), pemahaman ibadah bukan sekadar gugur kewajiban, melainkan sarana membangun fondasi mental yang tangguh, kedisiplinan diri, dan ketenangan batin dalam menghadapi tantangan akademik maupun sosial.', ikon: '✨' },

@@ -3,7 +3,7 @@ import { ModuleContent, Question, JurusBKItem } from '../types';
 import { 
   FileText, HelpCircle, PlayCircle, BookOpen, CheckSquare, Edit3, 
   Gamepad2, ArrowLeft, CheckCircle2, XCircle, RotateCcw, Award, Sparkles, Send, ChevronRight,
-  Printer, Download, FileSpreadsheet, UserCheck, Plus, Users, X
+  Printer, Download, FileSpreadsheet, UserCheck, Plus, Users, X, ExternalLink
 } from 'lucide-react';
 import { exportToDoc, exportToExcel, exportToTxt, printDocumentContent } from '../utils/exportUtils';
 import { PrintPreviewModal } from './PrintPreviewModal';
