@@ -222,99 +222,199 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, onBack }) =>
 
     const jurusRows = jurus.map(j => `
       <tr>
-        <td style="font-weight: bold;">Jurus ${j.jurusNo}: ${j.namaJurus}</td>
-        <td>${j.implementasi}</td>
-        <td><i>${j.mediaBentuk}</i></td>
+        <td style="font-weight: bold; width: 25%; vertical-align: top; border: 1px solid #000000; padding: 6px 8px;">Jurus ${j.jurusNo}: ${j.namaJurus}</td>
+        <td style="vertical-align: top; border: 1px solid #000000; padding: 6px 8px;">${j.implementasi}</td>
+        <td style="width: 25%; font-style: italic; vertical-align: top; border: 1px solid #000000; padding: 6px 8px;">${j.mediaBentuk}</td>
       </tr>
     `).join('');
 
-    const dimensiList = (identifikasi?.dimensiPancasila || []).map((d: any) => `
-      <li><b>${d.dimensi}:</b> ${d.keterangan}</li>
+    const dimensiRows = (identifikasi?.dimensiPancasila || []).map((d: any, idx: number) => `
+      <tr>
+        <td style="text-align: center; font-weight: bold; width: 6%; border: 1px solid #000000; padding: 5px 6px;">${idx + 1}</td>
+        <td style="font-weight: bold; width: 32%; border: 1px solid #000000; padding: 5px 8px;">${d.dimensi}</td>
+        <td style="border: 1px solid #000000; padding: 5px 8px;">${d.keterangan}</td>
+      </tr>
     `).join('');
 
-    const tujuanList = (desain?.tujuanLayanan || []).map((t: any) => `
-      <li>${t}</li>
+    const tujuanItems = (desain?.tujuanLayanan || []).map((t: any) => `
+      <li style="margin-bottom: 4px;">${t}</li>
     `).join('');
 
     const langkahRows = langkah.map((l: any, idx: number) => `
       <tr>
-        <td style="font-weight: bold; width: 28%;">${l.tahap}</td>
-        <td>${l.aktivitas}</td>
+        <td style="text-align: center; font-weight: bold; width: 6%; border: 1px solid #000000; padding: 6px 8px;">${idx + 1}</td>
+        <td style="font-weight: bold; width: 26%; border: 1px solid #000000; padding: 6px 8px;">${l.tahap}</td>
+        <td style="border: 1px solid #000000; padding: 6px 8px;">${l.aktivitas}</td>
       </tr>
     `).join('');
 
-    const indikatorList = (asesmen?.indikatorKeberhasilan || []).map((i: any) => `
-      <li>${i}</li>
+    const indikatorItems = (asesmen?.indikatorKeberhasilan || []).map((i: any) => `
+      <li style="margin-bottom: 4px;">${i}</li>
     `).join('');
 
+    const kuisionerRows = (module.kuisioner || []).map((q, idx) => {
+      const pilihanLabels = (q.pilihan || []).map(p => `[  ] ${p.label}`).join('<br/>');
+      return `
+        <tr>
+          <td style="text-align: center; font-weight: bold; width: 6%; border: 1px solid #000000; padding: 6px 8px;">${idx + 1}</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;"><b>${q.pertanyaan}</b></td>
+          <td style="width: 42%; font-size: 9pt; border: 1px solid #000000; padding: 6px 8px;">${pilihanLabels}</td>
+        </tr>
+      `;
+    }).join('');
+
     const htmlContent = `
-      <h2>RENCANA PELAKSANAAN PEMBELAJARAN (RPP) BK MENDALAM</h2>
-      <h3>MODUL ${module.nomor}: ${module.judul.toUpperCase()}</h3>
+      <div style="text-align: center; margin-bottom: 18px; border-bottom: 2px solid #0f172a; padding-bottom: 10px;">
+        <div style="font-size: 10pt; font-weight: bold; letter-spacing: 1.5px; color: #1e3a8a; text-transform: uppercase;">
+          KURIKULUM MERDEKA • PEMBELAJARAN MENDALAM (DEEP LEARNING)
+        </div>
+        <div style="font-size: 13.5pt; font-weight: bold; color: #000000; margin-top: 4px; text-transform: uppercase;">
+          RENCANA PELAKSANAAN PEMBELAJARAN (RPP) BIMBINGAN DAN KONSELING
+        </div>
+        <div style="font-size: 11.5pt; font-weight: bold; color: #1e293b; margin-top: 3px;">
+          MODUL ${module.nomor}: ${module.judul.toUpperCase()}
+        </div>
+        <div style="font-size: 9.5pt; font-style: italic; color: #475569; margin-top: 2px;">
+          Jenjang: ${module.fokusJenjang || `Kelas ${module.kelasTarget?.[0] || '7'} (Fase D)`} • UPT SMP Negeri 7 Pasuruan
+        </div>
+      </div>
       
-      <h2>1. IDENTITAS PEMBELAJARAN</h2>
-      <table>
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-top: 14px; margin-bottom: 6px; text-transform: uppercase; border-radius: 2px;">
+        1. IDENTITAS PEMBELAJARAN
+      </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 10pt;">
         <tr>
-          <td style="width: 30%;"><b>Satuan Pendidikan</b></td>
-          <td>${identitas.satuanPendidikan || 'SMP Negeri 7 Pasuruan'}</td>
+          <td style="width: 30%; font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Satuan Pendidikan</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">${identitas.satuanPendidikan || 'SMP Negeri 7 Pasuruan'}</td>
         </tr>
         <tr>
-          <td><b>Mata Pelajaran</b></td>
-          <td>${identitas.mataPelajaran || 'Bimbingan dan Konseling (BK)'}</td>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Mata Pelajaran</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">${identitas.mataPelajaran || 'Bimbingan dan Konseling (BK)'}</td>
         </tr>
         <tr>
-          <td><b>Kelas / Semester</b></td>
-          <td>${identitas.kelasSemester || '7 / Ganjil'}</td>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Kelas / Semester</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px; font-weight: bold;">${identitas.kelasSemester || '7 / Ganjil'}</td>
         </tr>
         <tr>
-          <td><b>Alokasi Waktu</b></td>
-          <td>${identitas.waktu || '2 JP (2 x 40 Menit)'}</td>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Alokasi Waktu</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">${identitas.waktu || '2 JP (2 x 40 Menit)'}</td>
         </tr>
         <tr>
-          <td><b>Materi Pokok Layanan</b></td>
-          <td><b>${identitas.materiPokok || module.judul}</b></td>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Materi Pokok Layanan</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px; font-weight: bold; color: #1e3a8a;">${identitas.materiPokok || module.judul}</td>
         </tr>
         <tr>
-          <td><b>Bidang Bimbingan</b></td>
-          <td>${identitas.bidangBimbingan || 'Pribadi & Social'}</td>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Bidang Bimbingan</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">${identitas.bidangBimbingan || 'Pribadi & Sosial'}</td>
         </tr>
         <tr>
-          <td><b>Model Pembelajaran</b></td>
-          <td>${identitas.modelPembelajaran || 'Project Based Learning (PjBL) & Deep Learning'}</td>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Model Pembelajaran</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">${identitas.modelPembelajaran || 'Project Based Learning (PjBL) & Deep Learning'}</td>
         </tr>
       </table>
 
-      <h2>2. IDENTIFIKASI MURID & PROFIL PELAJAR PANCASILA</h2>
-      <p><b>Kesiapan Murid:</b> ${identifikasi.kesiapanMurid || '-'}</p>
-      <p><b>Karakteristik Materi:</b> ${identifikasi.karakteristikMateri || '-'}</p>
-      <p><b>8 Dimensi Profil Pelajar Pancasila:</b></p>
-      <ul>
-        ${dimensiList}
-      </ul>
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-top: 14px; margin-bottom: 6px; text-transform: uppercase; border-radius: 2px;">
+        2. IDENTIFIKASI MURID & PROFIL PELAJAR PANCASILA (8 DIMENSI)
+      </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 10pt;">
+        <tr>
+          <td style="width: 30%; font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Kesiapan Murid</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px; text-align: justify;">${identifikasi.kesiapanMurid || '-'}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Karakteristik Materi Layanan</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px; text-align: justify;">${identifikasi.karakteristikMateri || '-'}</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="background-color: #f1f5f9; border: 1px solid #000000; padding: 6px 8px; font-weight: bold; text-align: center;">
+            8 DIMENSI PROFIL PELAJAR PANCASILA
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="border: 1px solid #000000; padding: 0;">
+            <table style="width: 100%; border-collapse: collapse; margin: 0; font-size: 9.5pt;">
+              <tr style="background-color: #f8fafc;">
+                <th style="width: 6%; border: 1px solid #000000; padding: 5px; text-align: center;">No</th>
+                <th style="width: 32%; border: 1px solid #000000; padding: 5px; text-align: left;">Dimensi Profil</th>
+                <th style="border: 1px solid #000000; padding: 5px; text-align: left;">Keterangan & Capaian Karakter Peserta Didik</th>
+              </tr>
+              ${dimensiRows}
+            </table>
+          </td>
+        </tr>
+      </table>
 
-      <h2>3. DESAIN LAYANAN KLASIKAL (DEEP LEARNING)</h2>
-      <p><b>Standar Kemandirian (SKKPD):</b> ${desain.skkpd || '-'}</p>
-      <p><b>Topik Kontekstual:</b> ${desain.topikKontekstual || '-'}</p>
-      <p><b>Integrasi Lintas Disiplin:</b> ${desain.lintasDisiplin || '-'}</p>
-      <p><b>Tujuan Layanan BK:</b></p>
-      <ul>
-        ${tujuanList}
-      </ul>
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-top: 14px; margin-bottom: 6px; text-transform: uppercase; border-radius: 2px;">
+        3. DESAIN LAYANAN KLASIKAL (DEEP LEARNING)
+      </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 10pt;">
+        <tr>
+          <td style="width: 30%; font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Standar Kemandirian (SKKPD)</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">${desain.skkpd || '-'}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Topik Layanan Kontekstual</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px; font-weight: bold;">${desain.topikKontekstual || '-'}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Integrasi Lintas Disiplin Ilmu</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">${desain.lintasDisiplin || '-'}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Tujuan Layanan BK</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">
+            <ol style="margin: 0; padding-left: 18px;">
+              ${tujuanItems}
+            </ol>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="background-color: #f1f5f9; border: 1px solid #000000; padding: 6px 8px; font-weight: bold; text-align: center;">
+            4 KERANGKA PEMBELAJARAN MENDALAM
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="border: 1px solid #000000; padding: 0;">
+            <table style="width: 100%; border-collapse: collapse; margin: 0; font-size: 9.5pt;">
+              <tr style="background-color: #f8fafc;">
+                <th style="width: 6%; border: 1px solid #000000; padding: 5px; text-align: center;">No</th>
+                <th style="width: 28%; border: 1px solid #000000; padding: 5px; text-align: left;">Kerangka Pembelajaran</th>
+                <th style="border: 1px solid #000000; padding: 5px; text-align: left;">Deskripsi Penerapan Layanan</th>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #000000; padding: 5px; text-align: center;">1</td>
+                <td style="border: 1px solid #000000; padding: 5px; font-weight: bold;">Praktik Pedagogis</td>
+                <td style="border: 1px solid #000000; padding: 5px;">${kerangka.praktikPedagogis || '-'}</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #000000; padding: 5px; text-align: center;">2</td>
+                <td style="border: 1px solid #000000; padding: 5px; font-weight: bold;">Kemitraan Pembelajaran</td>
+                <td style="border: 1px solid #000000; padding: 5px;">${kerangka.kemitraanPembelajaran || '-'}</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #000000; padding: 5px; text-align: center;">3</td>
+                <td style="border: 1px solid #000000; padding: 5px; font-weight: bold;">Lingkungan Pembelajaran</td>
+                <td style="border: 1px solid #000000; padding: 5px;">${kerangka.lingkunganPembelajaran || '-'}</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #000000; padding: 5px; text-align: center;">4</td>
+                <td style="border: 1px solid #000000; padding: 5px; font-weight: bold;">Pemanfaatan Digital</td>
+                <td style="border: 1px solid #000000; padding: 5px;">${kerangka.pemanfaatanDigital || '-'}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
 
-      <h3>4 Kerangka Pembelajaran Mendalam:</h3>
-      <ul>
-        <li><b>Praktik Pedagogis:</b> ${kerangka.praktikPedagogis || '-'}</li>
-        <li><b>Kemitraan Pembelajaran:</b> ${kerangka.kemitraanPembelajaran || '-'}</li>
-        <li><b>Lingkungan Pembelajaran:</b> ${kerangka.lingkunganPembelajaran || '-'}</li>
-        <li><b>Pemanfaatan Digital:</b> ${kerangka.pemanfaatanDigital || '-'}</li>
-      </ul>
-
-      <h2>4. INTEGRASI 7 JURUS BK HEBAT</h2>
-      <table>
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-top: 14px; margin-bottom: 6px; text-transform: uppercase; border-radius: 2px;">
+        4. INTEGRASI 7 JURUS BK HEBAT (SMP NEGERI 7 PASURUAN)
+      </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 9.5pt;">
         <thead>
-          <tr>
-            <th style="width: 30%;">Jurus BK Hebat</th>
-            <th>Implementasi Layanan</th>
-            <th>Bentuk / Media</th>
+          <tr style="background-color: #f1f5f9;">
+            <th style="width: 25%; border: 1px solid #000000; padding: 6px 8px; text-align: left;">Jurus BK Hebat</th>
+            <th style="border: 1px solid #000000; padding: 6px 8px; text-align: left;">Implementasi Layanan di Sekolah</th>
+            <th style="width: 25%; border: 1px solid #000000; padding: 6px 8px; text-align: left;">Bentuk / Media Layanan</th>
           </tr>
         </thead>
         <tbody>
@@ -322,43 +422,109 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, onBack }) =>
         </tbody>
       </table>
 
-      <h2>5. PELAKSANAAN PEMBELAJARAN & ALUR DEEP LEARNING</h2>
-      <h3>A. Prinsip Pembelajaran:</h3>
-      <ul>
-        <li><b>Berkesadaran (Mindful):</b> ${prinsip.berkesadaran || '-'}</li>
-        <li><b>Bermakna (Meaningful):</b> ${prinsip.bermakna || '-'}</li>
-        <li><b>Menggembirakan (Joyful):</b> ${prinsip.menggembirakan || '-'}</li>
-      </ul>
-
-      <h3>B. Pengalaman Belajar:</h3>
-      <ul>
-        <li><b>Memahami:</b> ${pengalaman.memahami || '-'}</li>
-        <li><b>Mengaplikasi:</b> ${pengalaman.mengaplikasi || '-'}</li>
-        <li><b>Merefleksi:</b> ${pengalaman.merefleksi || '-'}</li>
-      </ul>
-
-      <p><b>Proyek Pembelajaran (PjBL):</b> ${pelaksanaan.pjbl || '-'}</p>
-
-      <h3>C. Langkah-Langkah Kegiatan Pembelajaran:</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Tahap Kegiatan</th>
-            <th>Aktivitas Guru BK & Siswa</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${langkahRows}
-        </tbody>
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-top: 14px; margin-bottom: 6px; text-transform: uppercase; border-radius: 2px;">
+        5. PELAKSANAAN PEMBELAJARAN & PENGALAMAN BELAJAR (DEEP LEARNING)
+      </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 10pt;">
+        <tr>
+          <td colspan="2" style="background-color: #f1f5f9; border: 1px solid #000000; padding: 6px 8px; font-weight: bold;">
+            A. 3 PRINSIP PEMBELAJARAN MENDALAM
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 30%; font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">1. Berkesadaran (Mindful)</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">${prinsip.berkesadaran || '-'}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">2. Bermakna (Meaningful)</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">${prinsip.bermakna || '-'}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">3. Menggembirakan (Joyful)</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">${prinsip.menggembirakan || '-'}</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="background-color: #f1f5f9; border: 1px solid #000000; padding: 6px 8px; font-weight: bold;">
+            B. 3 PENGALAMAN BELAJAR PESERTA DIDIK
+          </td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">1. Memahami (Acquiring)</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">${pengalaman.memahami || '-'}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">2. Mengaplikasi (Applying)</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">${pengalaman.mengaplikasi || '-'}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">3. Merefleksi (Reflecting)</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">${pengalaman.merefleksi || '-'}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Proyek Pembelajaran (PjBL)</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px; font-weight: bold; color: #1e3a8a;">${pelaksanaan.pjbl || '-'}</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="background-color: #f1f5f9; border: 1px solid #000000; padding: 6px 8px; font-weight: bold;">
+            C. LANGKAH-LANGKAH KEGIATAN PEMBELAJARAN MENDALAM
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="border: 1px solid #000000; padding: 0;">
+            <table style="width: 100%; border-collapse: collapse; margin: 0; font-size: 9.5pt;">
+              <tr style="background-color: #f8fafc;">
+                <th style="width: 6%; border: 1px solid #000000; padding: 6px; text-align: center;">No</th>
+                <th style="width: 26%; border: 1px solid #000000; padding: 6px; text-align: left;">Tahap Kegiatan</th>
+                <th style="border: 1px solid #000000; padding: 6px; text-align: left;">Aktivitas Guru BK & Peserta Didik</th>
+              </tr>
+              ${langkahRows}
+            </table>
+          </td>
+        </tr>
       </table>
 
-      <h2>6. ASESMEN, INDIKATOR & TINDAK LANJUT</h2>
-      <p><b>Sistem Asesmen:</b> ${asesmen.asesmen || '-'}</p>
-      <p><b>Indikator Keberhasilan:</b></p>
-      <ul>
-        ${indikatorList}
-      </ul>
-      <p><b>Rencana Tindak Lanjut:</b> ${asesmen.rencanaTindakLanjut || '-'}</p>
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-top: 14px; margin-bottom: 6px; text-transform: uppercase; border-radius: 2px;">
+        6. ASESMEN, INDIKATOR KEBERHASILAN & RENCANA TINDAK LANJUT
+      </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 10pt;">
+        <tr>
+          <td style="width: 30%; font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Asesmen Pembelajaran Mendalam</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px; text-align: justify;">${asesmen.asesmen || '-'}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Indikator Keberhasilan Layanan</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px;">
+            <ul style="margin: 0; padding-left: 18px;">
+              ${indikatorItems}
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Rencana Tindak Lanjut Layanan</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px; text-align: justify; font-weight: bold; color: #065f46; background-color: #f0fdf4;">${asesmen.rencanaTindakLanjut || '-'}</td>
+        </tr>
+      </table>
+
+      ${module.kuisioner && module.kuisioner.length > 0 ? `
+        <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-top: 18px; margin-bottom: 6px; text-transform: uppercase; border-radius: 2px;">
+          LAMPIRAN: INSTRUMEN ASESMEN DIAGNOSTIK NON-KOGNITIF
+        </div>
+        <p style="font-size: 9.5pt; font-style: italic; margin-top: 2px; margin-bottom: 6px;">
+          <b>Petunjuk:</b> Berikan tanda centang (✓) pada pilihan jawaban yang paling sesuai dengan kondisi diri Anda.
+        </p>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 9.5pt;">
+          <thead>
+            <tr style="background-color: #f1f5f9;">
+              <th style="width: 6%; border: 1px solid #000000; padding: 6px; text-align: center;">No</th>
+              <th style="border: 1px solid #000000; padding: 6px; text-align: left;">Pernyataan Asesmen Diagnostik</th>
+              <th style="width: 42%; border: 1px solid #000000; padding: 6px; text-align: left;">Pilihan Jawaban & Skor</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${kuisionerRows}
+          </tbody>
+        </table>
+      ` : ''}
     `;
 
     setPreviewModal({
@@ -370,22 +536,105 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, onBack }) =>
   };
 
   const openKuisionerModal = () => {
-    const qList = (module.kuisioner || []).map((q, idx) => {
-      const pilihanText = (q.pilihan || []).map(p => `${p.emoji || ''} ${p.label} (Skor ${p.skor})`).join(' | ');
-      return `
-        <div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0;">
-          <p><b>${idx + 1}. ${q.pertanyaan}</b></p>
-          <p style="font-size: 9.5pt; color: #475569;">[ ] Pilihan: ${pilihanText}</p>
+    const identitas = module.rpp?.identitas || {} as any;
+    const kuisionerRows = (module.kuisioner || []).map((q, idx) => {
+      const pilihanBoxes = (q.pilihan || []).map(p => `
+        <div style="display: inline-block; margin-right: 12px; margin-bottom: 4px;">
+          [ &nbsp; ] ${p.emoji || ''} ${p.label} <span style="font-size: 8pt; color: #475569;">(Skor ${p.skor})</span>
         </div>
+      `).join('');
+
+      return `
+        <tr>
+          <td style="text-align: center; font-weight: bold; width: 6%; border: 1px solid #000000; padding: 6px 8px; vertical-align: top;">${idx + 1}</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px; vertical-align: top;">
+            <b>${q.pertanyaan}</b>
+            <div style="margin-top: 6px; padding-top: 4px; border-top: 1px dashed #cbd5e1;">
+              ${pilihanBoxes}
+            </div>
+          </td>
+        </tr>
       `;
     }).join('');
 
     const htmlContent = `
-      <h2>KUISIONER DIAGNOSTIK NON-KOGNITIF BK</h2>
-      <h3>MODUL ${module.nomor}: ${module.judul.toUpperCase()}</h3>
-      <p><b>Petunjuk:</b> Isilah kuisioner di bawah ini dengan memilih pilihan jawaban yang paling menggambarkan kondisi diri Anda saat ini.</p>
-      <hr/>
-      ${qList}
+      <div style="text-align: center; margin-bottom: 16px; border-bottom: 2px solid #0f172a; padding-bottom: 10px;">
+        <div style="font-size: 10pt; font-weight: bold; letter-spacing: 1px; color: #1e3a8a; text-transform: uppercase;">
+          INSTRUMEN ASESMEN DIAGNOSTIK NON-KOGNITIF
+        </div>
+        <div style="font-size: 13pt; font-weight: bold; color: #000000; margin-top: 4px; text-transform: uppercase;">
+          LAYANAN BIMBINGAN DAN KONSELING (DEEP LEARNING)
+        </div>
+        <div style="font-size: 11pt; font-weight: bold; color: #1e293b; margin-top: 2px;">
+          MODUL ${module.nomor}: ${module.judul.toUpperCase()}
+        </div>
+        <div style="font-size: 9.5pt; font-style: italic; color: #475569; margin-top: 2px;">
+          Fokus Jenjang: ${module.fokusJenjang || `Kelas ${module.kelasTarget?.[0] || '7'} (Fase D)`} • UPT SMP Negeri 7 Pasuruan
+        </div>
+      </div>
+
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 10pt;">
+        <tr>
+          <td style="width: 20%; font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 5px 8px;">Nama Peserta Didik</td>
+          <td style="width: 40%; border: 1px solid #000000; padding: 5px 8px;">...............................................................</td>
+          <td style="width: 15%; font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 5px 8px;">Kelas / No. Absen</td>
+          <td style="width: 25%; border: 1px solid #000000; padding: 5px 8px;">${identitas.kelasSemester || '7'} / ..........</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 5px 8px;">Hari / Tanggal</td>
+          <td style="border: 1px solid #000000; padding: 5px 8px;">...............................................................</td>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 5px 8px;">Materi Layanan</td>
+          <td style="border: 1px solid #000000; padding: 5px 8px; font-weight: bold; color: #1e3a8a;">${identitas.materiPokok || module.judul}</td>
+        </tr>
+      </table>
+
+      <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 8px 12px; margin-bottom: 12px; font-size: 9.5pt; border-radius: 4px;">
+        <b>Petunjuk Pengisian:</b><br/>
+        1. Bacalah setiap pernyataan butir instrumen di bawah ini dengan seksama.<br/>
+        2. Berikan tanda centang [ ✓ ] pada kotak salah satu pilihan yang paling sesuai dengan kondisi diri Anda saat ini secara jujur.<br/>
+        3. Tidak ada jawaban benar atau salah, instrumen ini bertujuan membantu Guru BK memahami kebutuhan dan potensi Anda.
+      </div>
+
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-bottom: 6px; text-transform: uppercase;">
+        DAFTAR BUTIR PERNYATAAN ASESMEN DIAGNOSTIK
+      </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 9.5pt;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th style="width: 6%; border: 1px solid #000000; padding: 6px; text-align: center;">No</th>
+            <th style="border: 1px solid #000000; padding: 6px; text-align: left;">Pernyataan Butir Asesmen & Pilihan Respons Peserta Didik</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${kuisionerRows}
+        </tbody>
+      </table>
+
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-bottom: 6px; text-transform: uppercase;">
+        PEDOMAN PENSKORAN & INTERPRETASI DIAGNOSTIK
+      </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 9.5pt;">
+        <tr style="background-color: #f1f5f9;">
+          <th style="width: 25%; border: 1px solid #000000; padding: 6px; text-align: center;">Rentang Skor</th>
+          <th style="width: 30%; border: 1px solid #000000; padding: 6px; text-align: left;">Kategori Diagnostik</th>
+          <th style="border: 1px solid #000000; padding: 6px; text-align: left;">Rekomendasi Tindak Lanjut Layanan BK</th>
+        </tr>
+        <tr>
+          <td style="text-align: center; font-weight: bold; border: 1px solid #000000; padding: 6px;">Skor Tinggi (76% - 100%)</td>
+          <td style="font-weight: bold; color: #065f46; border: 1px solid #000000; padding: 6px;">Sangat Baik / Mandiri</td>
+          <td style="border: 1px solid #000000; padding: 6px;">Penguatan karakter positif, keteladanan teman sebaya (peer tutor).</td>
+        </tr>
+        <tr>
+          <td style="text-align: center; font-weight: bold; border: 1px solid #000000; padding: 6px;">Skor Sedang (50% - 75%)</td>
+          <td style="font-weight: bold; color: #854d0e; border: 1px solid #000000; padding: 6px;">Cukup / Perlu Pembiasaan</td>
+          <td style="border: 1px solid #000000; padding: 6px;">Bimbingan klasikal berkala, diskusi kelompok terarah, jurnal refleksi.</td>
+        </tr>
+        <tr>
+          <td style="text-align: center; font-weight: bold; border: 1px solid #000000; padding: 6px;">Skor Rendah (&lt; 50%)</td>
+          <td style="font-weight: bold; color: #991b1b; border: 1px solid #000000; padding: 6px;">Perlu Perhatian Khusus</td>
+          <td style="border: 1px solid #000000; padding: 6px;">Konseling individual, kolaborasi intensif dengan wali kelas & orang tua.</td>
+        </tr>
+      </table>
     `;
 
     const excelData = (module.kuisioner || []).map((q, idx) => ({
@@ -410,30 +659,84 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, onBack }) =>
   };
 
   const openMateriModal = () => {
-    const materiList = (module.materiPoin || []).map((m, idx) => `
-      <div style="margin-bottom: 16px;">
-        <h3>${idx + 1}. ${m.ikon || '📌'} ${m.judul}</h3>
-        <p style="text-align: justify; line-height: 1.6;">${m.isi}</p>
-      </div>
+    const materiRows = (module.materiPoin || []).map((m, idx) => `
+      <tr>
+        <td style="text-align: center; font-weight: bold; width: 6%; border: 1px solid #000000; padding: 6px 8px; vertical-align: top;">${idx + 1}</td>
+        <td style="width: 30%; font-weight: bold; border: 1px solid #000000; padding: 6px 8px; vertical-align: top;">
+          ${m.ikon || '📌'} ${m.judul}
+        </td>
+        <td style="border: 1px solid #000000; padding: 6px 8px; text-align: justify; line-height: 1.5;">
+          ${m.isi}
+        </td>
+      </tr>
     `).join('');
 
     const videoSec = module.video ? `
-      <div style="background-color: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 20px;">
-        <h3 style="margin-top:0;">Scenario Skenario Video Animasi: ${module.video.judul} (${module.video.durasi})</h3>
-        <p><b>Cerita Realistis:</b> ${module.video.ceritaRealistis}</p>
-        <p><b>Resolusi Moral:</b> ${module.video.resolusiMoral}</p>
-        <p><i>"${module.video.kutipanInspiratif}"</i></p>
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-top: 14px; margin-bottom: 6px; text-transform: uppercase;">
+        SKENARIO MEDIA VIDEO EDUKATIF ANIMASI
       </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 10pt;">
+        <tr>
+          <td style="width: 25%; font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Judul & Durasi</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px; font-weight: bold;">${module.video.judul} (${module.video.durasi})</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Alur Cerita Realistis</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px; text-align: justify;">${module.video.ceritaRealistis}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Resolusi Moral</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px; text-align: justify;">${module.video.resolusiMoral}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 6px 8px;">Pesan Moral Inspiratif</td>
+          <td style="border: 1px solid #000000; padding: 6px 8px; font-style: italic; color: #1e3a8a;">"${module.video.kutipanInspiratif}"</td>
+        </tr>
+      </table>
     ` : '';
 
     const htmlContent = `
-      <h2>MATERI EDUKASI & RANGKUMAN BACAAN BK</h2>
-      <h3>MODUL ${module.nomor}: ${module.judul.toUpperCase()}</h3>
+      <div style="text-align: center; margin-bottom: 16px; border-bottom: 2px solid #0f172a; padding-bottom: 10px;">
+        <div style="font-size: 10pt; font-weight: bold; letter-spacing: 1px; color: #1e3a8a; text-transform: uppercase;">
+          MATERI LAYANAN EDUKASI & BACAAN BK BERMAKNA
+        </div>
+        <div style="font-size: 13pt; font-weight: bold; color: #000000; margin-top: 4px; text-transform: uppercase;">
+          MODUL ${module.nomor}: ${module.judul.toUpperCase()}
+        </div>
+        <div style="font-size: 9.5pt; font-style: italic; color: #475569; margin-top: 2px;">
+          Fokus Jenjang: ${module.fokusJenjang || `Kelas ${module.kelasTarget?.[0] || '7'} (Fase D)`} • UPT SMP Negeri 7 Pasuruan
+        </div>
+      </div>
+
       ${videoSec}
-      ${materiList}
-      <br/>
-      <h3>RANGKUMAN & REFLEKSI DIRI</h3>
-      <p>Mari terapkan pemahaman materi ini dalam kehidupan sehari-hari untuk membentuk karakter siswa yang mandiri, cerdas, dan berakhlak mulia di SMP Negeri 7 Pasuruan.</p>
+
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-top: 14px; margin-bottom: 6px; text-transform: uppercase;">
+        POIN-POIN MATERI PEMBELAJARAN MENDALAM
+      </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 10pt;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th style="width: 6%; border: 1px solid #000000; padding: 6px; text-align: center;">No</th>
+            <th style="width: 30%; border: 1px solid #000000; padding: 6px; text-align: left;">Topik / Poin Inti</th>
+            <th style="border: 1px solid #000000; padding: 6px; text-align: left;">Uraian Materi & Pembahasan Bermakna</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${materiRows}
+        </tbody>
+      </table>
+
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-top: 14px; margin-bottom: 6px; text-transform: uppercase;">
+        RANGKUMAN & REFLEKSI DIRI PESERTA DIDIK
+      </div>
+      <div style="border: 1px solid #000000; padding: 12px; font-size: 10pt; line-height: 1.6; text-align: justify; margin-bottom: 14px; background-color: #f8fafc;">
+        <p style="margin: 0 0 8px 0;">
+          <b>Kesimpulan Utama:</b> Melalui pembelajaran mendalam pada Modul ${module.nomor}, peserta didik diajak untuk menginternalisasi nilai-nilai kebaikan, memahami hakikat diri dan interaksi sosial yang sehat, serta menumbuhkan kesadaran moral yang kokoh.
+        </p>
+        <p style="margin: 0;">
+          <b>Komitmen Nyata:</b> Terus biasakan nilai-nilai ini di lingkungan keluarga, kelas, dan masyarakat demi mewujudkan Profil Pelajar Pancasila yang utuh di UPT SMP Negeri 7 Pasuruan.
+        </p>
+      </div>
     `;
 
     setPreviewModal({
@@ -445,28 +748,60 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, onBack }) =>
   };
 
   const openSoalModal = () => {
+    const identitas = module.rpp?.identitas || {} as any;
     const soalList = (module.soalEval || []).map((q, idx) => {
       const pilihanHtml = q.pilihan ? `
-        <ul style="margin-top: 4px; margin-bottom: 6px;">
-          ${q.pilihan.map((p, pIdx) => `<li>${String.fromCharCode(65 + pIdx)}. ${p}</li>`).join('')}
-        </ul>
+        <div style="margin-top: 5px; margin-bottom: 5px; padding-left: 18px;">
+          ${q.pilihan.map((p, pIdx) => `<div>${String.fromCharCode(65 + pIdx)}. ${p}</div>`).join('')}
+        </div>
       ` : '';
 
       return `
-        <div style="margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0;">
-          <p><b>Soal ${idx + 1} (${(q.type || 'PILIHAN GANDA').toUpperCase().replace('_', ' ')}):</b> ${q.pertanyaan}</p>
+        <div style="margin-bottom: 12px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; page-break-inside: avoid;">
+          <div style="font-weight: bold;">
+            Soal ${idx + 1} <span style="font-size: 8.5pt; background-color: #e2e8f0; padding: 1px 6px; border-radius: 3px; font-weight: normal;">[${(q.type || 'PILIHAN GANDA').toUpperCase().replace('_', ' ')}]</span>:
+          </div>
+          <div style="margin-top: 4px; text-align: justify;">${q.pertanyaan}</div>
           ${pilihanHtml}
-          <p style="font-size: 9.5pt; color: #15803d; font-weight: bold; margin-top: 4px;">
-            Kunci Jawaban: ${Array.isArray(q.jawabanBenar) ? q.jawabanBenar.join(', ') : String(q.jawabanBenar)}
-          </p>
-          <p style="font-size: 9.5pt; color: #475569; font-style: italic;">Pembahasan: ${q.pembahasan}</p>
+          <div style="margin-top: 6px; padding-top: 4px; border-top: 1px dashed #cbd5e1; font-size: 9pt;">
+            <span style="color: #15803d; font-weight: bold;">Kunci Jawaban: ${Array.isArray(q.jawabanBenar) ? q.jawabanBenar.join(', ') : String(q.jawabanBenar)}</span>
+            <div style="color: #475569; font-style: italic; margin-top: 2px;">Pembahasan: ${q.pembahasan}</div>
+          </div>
         </div>
       `;
     }).join('');
 
     const htmlContent = `
-      <h2>BANK SOAL EVALUASI BK (30 SOAL HOTS)</h2>
-      <h3>MODUL ${module.nomor}: ${module.judul.toUpperCase()}</h3>
+      <div style="text-align: center; margin-bottom: 16px; border-bottom: 2px solid #0f172a; padding-bottom: 10px;">
+        <div style="font-size: 10pt; font-weight: bold; letter-spacing: 1px; color: #1e3a8a; text-transform: uppercase;">
+          BANK SOAL EVALUASI PEMBELAJARAN MENDALAM (HOTS)
+        </div>
+        <div style="font-size: 13pt; font-weight: bold; color: #000000; margin-top: 4px; text-transform: uppercase;">
+          MODUL ${module.nomor}: ${module.judul.toUpperCase()}
+        </div>
+        <div style="font-size: 9.5pt; font-style: italic; color: #475569; margin-top: 2px;">
+          Fokus Jenjang: ${module.fokusJenjang || `Kelas ${module.kelasTarget?.[0] || '7'} (Fase D)`} • UPT SMP Negeri 7 Pasuruan
+        </div>
+      </div>
+
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 10pt;">
+        <tr>
+          <td style="width: 20%; font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 5px 8px;">Nama Siswa</td>
+          <td style="width: 40%; border: 1px solid #000000; padding: 5px 8px;">...............................................................</td>
+          <td style="width: 15%; font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 5px 8px;">Kelas / No. Absen</td>
+          <td style="width: 25%; border: 1px solid #000000; padding: 5px 8px;">${identitas.kelasSemester || '7'} / ..........</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 5px 8px;">Hari / Tanggal</td>
+          <td style="border: 1px solid #000000; padding: 5px 8px;">...............................................................</td>
+          <td style="font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 5px 8px;">Nilai / Skor</td>
+          <td style="border: 1px solid #000000; padding: 5px 8px; font-weight: bold; font-size: 12pt;">&nbsp;</td>
+        </tr>
+      </table>
+
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-bottom: 8px; text-transform: uppercase;">
+        DAFTAR 30 SOAL EVALUASI HOTS BESERTA KUNCI & PEMBAHASAN
+      </div>
       ${soalList}
     `;
 
@@ -495,14 +830,69 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, onBack }) =>
   };
 
   const openLatihanModal = () => {
+    const identitas = module.rpp?.identitas || {} as any;
     const htmlContent = `
-      <h2>LEMBAR KERJA PESERTA DIDIK (LKPD) / LATIHAN MANDIRI BK</h2>
-      <h3>MODUL ${module.nomor}: ${module.judul.toUpperCase()}</h3>
-      <p><b>Instruksi:</b> Bacalah materi modul dengan seksama, kemudian jawablah pertanyaan refleksi mandiri berikut untuk mengukur tingkat pemahaman dan penerapan dalam kehidupan sehari-hari.</p>
-      <hr/>
-      <h3>Jurnal Refleksi Mandiri:</h3>
-      <p><b>1. Pertanyaan Refleksi Utama:</b> What are the key takeaways and personal action plans from this guidance module?</p>
-      <p><b>2. Rencana Aksi Nyata:</b> Tuliskan minimal 2 komitmen perubahan positif yang akan Anda terapkan di lingkungan sekolah/rumah.</p>
+      <div style="text-align: center; margin-bottom: 16px; border-bottom: 2px solid #0f172a; padding-bottom: 10px;">
+        <div style="font-size: 10pt; font-weight: bold; letter-spacing: 1px; color: #1e3a8a; text-transform: uppercase;">
+          LEMBAR KERJA PESERTA DIDIK (LKPD) / JURNAL REFLEKSI MENDALAM
+        </div>
+        <div style="font-size: 13pt; font-weight: bold; color: #000000; margin-top: 4px; text-transform: uppercase;">
+          MODUL ${module.nomor}: ${module.judul.toUpperCase()}
+        </div>
+        <div style="font-size: 9.5pt; font-style: italic; color: #475569; margin-top: 2px;">
+          Fokus Jenjang: ${module.fokusJenjang || `Kelas ${module.kelasTarget?.[0] || '7'} (Fase D)`} • UPT SMP Negeri 7 Pasuruan
+        </div>
+      </div>
+
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 10pt;">
+        <tr>
+          <td style="width: 20%; font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 5px 8px;">Nama Lengkap</td>
+          <td style="width: 40%; border: 1px solid #000000; padding: 5px 8px;">...............................................................</td>
+          <td style="width: 15%; font-weight: bold; background-color: #f8fafc; border: 1px solid #000000; padding: 5px 8px;">Kelas / No. Absen</td>
+          <td style="width: 25%; border: 1px solid #000000; padding: 5px 8px;">${identitas.kelasSemester || '7'} / ..........</td>
+        </tr>
+      </table>
+
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-bottom: 6px; text-transform: uppercase;">
+        AKTIVITAS REFLEKSI & PENERAPAN NILAI (DEEP LEARNING)
+      </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 10pt;">
+        <tr>
+          <th style="width: 6%; border: 1px solid #000000; padding: 6px; text-align: center;">No</th>
+          <th style="width: 34%; border: 1px solid #000000; padding: 6px; text-align: left;">Fokus Pengalaman Belajar</th>
+          <th style="border: 1px solid #000000; padding: 6px; text-align: left;">Lembar Jawaban & Refleksi Peserta Didik</th>
+        </tr>
+        <tr>
+          <td style="text-align: center; font-weight: bold; border: 1px solid #000000; padding: 8px;">1</td>
+          <td style="font-weight: bold; border: 1px solid #000000; padding: 8px;">
+            <b>Memahami:</b><br/>
+            Apa wawasan baru terpenting yang Anda dapatkan setelah mempelajari modul bimbingan ini?
+          </td>
+          <td style="height: 90px; border: 1px solid #000000; padding: 8px; vertical-align: top;">
+            &nbsp;
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center; font-weight: bold; border: 1px solid #000000; padding: 8px;">2</td>
+          <td style="font-weight: bold; border: 1px solid #000000; padding: 8px;">
+            <b>Mengaplikasi:</b><br/>
+            Tuliskan 2 rencana aksi nyata yang akan Anda praktikkan di sekolah atau di rumah minggu ini!
+          </td>
+          <td style="height: 90px; border: 1px solid #000000; padding: 8px; vertical-align: top;">
+            &nbsp;
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center; font-weight: bold; border: 1px solid #000000; padding: 8px;">3</td>
+          <td style="font-weight: bold; border: 1px solid #000000; padding: 8px;">
+            <b>Merefleksi:</b><br/>
+            Bagaimana perasaan Anda dan tantangan apa yang mungkin dihadapi saat menerapkan komitmen tersebut?
+          </td>
+          <td style="height: 90px; border: 1px solid #000000; padding: 8px; vertical-align: top;">
+            &nbsp;
+          </td>
+        </tr>
+      </table>
     `;
 
     setPreviewModal({
@@ -514,23 +904,66 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, onBack }) =>
   };
 
   const openKuisModal = () => {
-    const mendatarList = (module.kuisTTS?.pertanyaanMendatar || []).map(p => `
-      <li><b>${p.no}.</b> ${p.petunjuk} <i>(Jawaban: ${p.jawaban})</i></li>
+    const mendatarRows = (module.kuisTTS?.pertanyaanMendatar || []).map(p => `
+      <tr>
+        <td style="text-align: center; font-weight: bold; width: 10%; border: 1px solid #000000; padding: 5px;">${p.no}</td>
+        <td style="border: 1px solid #000000; padding: 5px;">${p.petunjuk}</td>
+        <td style="width: 25%; font-weight: bold; border: 1px solid #000000; padding: 5px; color: #1e3a8a;">${p.jawaban}</td>
+      </tr>
     `).join('');
 
-    const menurunList = (module.kuisTTS?.pertanyaanMenurun || []).map(p => `
-      <li><b>${p.no}.</b> ${p.petunjuk} <i>(Jawaban: ${p.jawaban})</i></li>
+    const menurunRows = (module.kuisTTS?.pertanyaanMenurun || []).map(p => `
+      <tr>
+        <td style="text-align: center; font-weight: bold; width: 10%; border: 1px solid #000000; padding: 5px;">${p.no}</td>
+        <td style="border: 1px solid #000000; padding: 5px;">${p.petunjuk}</td>
+        <td style="width: 25%; font-weight: bold; border: 1px solid #000000; padding: 5px; color: #1e3a8a;">${p.jawaban}</td>
+      </tr>
     `).join('');
 
     const htmlContent = `
-      <h2>SOAL TEKA-TEKI SILANG (TTS) & KUIS INTERAKTIF BK</h2>
-      <h3>MODUL ${module.nomor}: ${module.judul.toUpperCase()}</h3>
-      
-      <h3>MENDATAR:</h3>
-      <ul>${mendatarList || '<li>-</li>'}</ul>
+      <div style="text-align: center; margin-bottom: 16px; border-bottom: 2px solid #0f172a; padding-bottom: 10px;">
+        <div style="font-size: 10pt; font-weight: bold; letter-spacing: 1px; color: #1e3a8a; text-transform: uppercase;">
+          LEMBAR KUIS EDUKATIF & TEKA-TEKI SILANG (TTS) BK
+        </div>
+        <div style="font-size: 13pt; font-weight: bold; color: #000000; margin-top: 4px; text-transform: uppercase;">
+          MODUL ${module.nomor}: ${module.judul.toUpperCase()}
+        </div>
+        <div style="font-size: 9.5pt; font-style: italic; color: #475569; margin-top: 2px;">
+          Fokus Jenjang: ${module.fokusJenjang || `Kelas ${module.kelasTarget?.[0] || '7'} (Fase D)`} • UPT SMP Negeri 7 Pasuruan
+        </div>
+      </div>
 
-      <h3>MENURUN:</h3>
-      <ul>${menurunList || '<li>-</li>'}</ul>
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-bottom: 6px; text-transform: uppercase;">
+        PERTANYAAN MENDATAR
+      </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 9.5pt;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th style="width: 10%; border: 1px solid #000000; padding: 5px; text-align: center;">No</th>
+            <th style="border: 1px solid #000000; padding: 5px; text-align: left;">Petunjuk Pertanyaan</th>
+            <th style="width: 25%; border: 1px solid #000000; padding: 5px; text-align: left;">Kunci Jawaban</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${mendatarRows || '<tr><td colspan="3" style="text-align: center; padding: 8px;">-</td></tr>'}
+        </tbody>
+      </table>
+
+      <div class="section-banner" style="background-color: #1e3a8a; color: #ffffff; padding: 6px 10px; font-weight: bold; font-size: 10.5pt; margin-bottom: 6px; text-transform: uppercase;">
+        PERTANYAAN MENURUN
+      </div>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 9.5pt;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th style="width: 10%; border: 1px solid #000000; padding: 5px; text-align: center;">No</th>
+            <th style="border: 1px solid #000000; padding: 5px; text-align: left;">Petunjuk Pertanyaan</th>
+            <th style="width: 25%; border: 1px solid #000000; padding: 5px; text-align: left;">Kunci Jawaban</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${menurunRows || '<tr><td colspan="3" style="text-align: center; padding: 8px;">-</td></tr>'}
+        </tbody>
+      </table>
     `;
 
     setPreviewModal({

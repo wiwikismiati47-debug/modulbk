@@ -1,5 +1,39 @@
 @import "tailwindcss";
 
+.print-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+  margin-bottom: 14px;
+}
+
+.print-content th,
+.print-content td {
+  border: 1px solid #334155;
+  padding: 6px 10px;
+  font-size: 10pt;
+  text-align: left;
+  vertical-align: top;
+}
+
+.print-content th {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  font-weight: bold;
+}
+
+.print-content .section-banner {
+  background-color: #1e3a8a;
+  color: #ffffff;
+  padding: 6px 10px;
+  font-weight: bold;
+  font-size: 10.5pt;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+
 @media print {
   /* Hide interactive non-printable elements */
   button,
@@ -39,3 +73,4 @@
     color-adjust: exact !important;
   }
 }
+

@@ -95,19 +95,42 @@ export const generateFullDocumentHtml = (
   <title>${title}</title>
   <style>
     @media print {
-      @page { margin: 15mm; size: A4; }
+      @page { margin: 15mm; size: A4 portrait; }
       body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
       .no-print { display: none !important; }
+      tr { page-break-inside: avoid !important; }
+      .section-banner { page-break-after: avoid !important; }
     }
-    body { font-family: 'Times New Roman', 'Arial', sans-serif; font-size: 11pt; color: #000000; line-height: 1.4; padding: 20px; background: #ffffff; }
-    h1 { font-size: 16pt; color: #000000; text-align: center; font-weight: bold; margin-bottom: 4px; }
-    h2 { font-size: 12pt; color: #000000; border-bottom: 1.5px solid #000000; padding-bottom: 2px; margin-top: 16px; font-weight: bold; text-transform: uppercase; }
-    h3 { font-size: 11pt; color: #000000; margin-top: 10px; font-weight: bold; }
-    table { width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; }
+    body { 
+      font-family: 'Times New Roman', Times, serif; 
+      font-size: 11pt; 
+      color: #000000; 
+      line-height: 1.45; 
+      padding: 15px 25px; 
+      background: #ffffff; 
+      margin: 0;
+    }
+    h1 { font-size: 14pt; color: #000000; text-align: center; font-weight: bold; margin-bottom: 4px; text-transform: uppercase; }
+    h2 { font-size: 11.5pt; color: #000000; border-bottom: 1.5px solid #000000; padding-bottom: 3px; margin-top: 14px; margin-bottom: 8px; font-weight: bold; text-transform: uppercase; }
+    h3 { font-size: 11pt; color: #000000; margin-top: 10px; margin-bottom: 6px; font-weight: bold; }
+    p { margin-top: 4px; margin-bottom: 6px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 6px; margin-bottom: 14px; page-break-inside: auto; }
     th, td { border: 1px solid #000000; padding: 6px 8px; font-size: 10pt; text-align: left; vertical-align: top; }
-    th { background-color: #f1f5f9 !important; color: #000000 !important; font-weight: bold; text-align: center; }
-    ul, ol { margin-left: 20px; margin-top: 4px; margin-bottom: 8px; }
+    th { background-color: #f1f5f9 !important; color: #000000 !important; font-weight: bold; }
+    ul, ol { margin-left: 20px; margin-top: 4px; margin-bottom: 8px; padding-left: 0; }
     li { margin-bottom: 3px; }
+    .section-banner {
+      background-color: #1e3a8a !important; 
+      color: #ffffff !important; 
+      padding: 6px 10px; 
+      font-weight: bold; 
+      font-size: 10.5pt; 
+      margin-top: 14px; 
+      margin-bottom: 6px; 
+      text-transform: uppercase; 
+      border-radius: 2px;
+      page-break-after: avoid;
+    }
     .footer { text-align: center; margin-top: 25px; font-size: 8.5pt; color: #64748b; border-top: 1px solid #cbd5e1; padding-top: 8px; }
   </style>
 </head>
