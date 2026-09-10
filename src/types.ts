@@ -79,6 +79,8 @@ export interface ModuleContent {
   emoji: string;
   warnaAesthetic: string;
   deskripsiSingkat: string;
+  kelasTarget?: ('7' | '8' | '9')[];
+  fokusJenjang?: string;
   rpp: RPPData;
   kuisioner: KuisionerItem[];
   video: {

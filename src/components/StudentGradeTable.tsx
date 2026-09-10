@@ -41,7 +41,11 @@ export const StudentGradeTable: React.FC<StudentGradeTableProps> = ({
   const [editingRecord, setEditingRecord] = useState<StudentGradeRecord | null>(null);
   const [notification, setNotification] = useState<string | null>(null);
 
-  const rombelList = ['7A', '7B', '7C', '7D', '7E', '7F', '7G', '7H'];
+  const rombelList = [
+    '7A', '7B', '7C', '7D', '7E', '7F', '7G', '7H',
+    '8A', '8B', '8C', '8D', '8E', '8F', '8G', '8H',
+    '9A', '9B', '9C', '9D', '9E', '9F', '9G', '9H'
+  ];
   const hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
   // Form state
@@ -209,10 +213,10 @@ export const StudentGradeTable: React.FC<StudentGradeTableProps> = ({
             <span>Rekapitulasi Penilaian Layanan Bimbingan Konseling</span>
           </div>
           <h2 className="text-2xl font-black text-slate-900 mt-1">
-            Daftar Nilai Tugas Layanan BK Kelas 7 (7A - 7H)
+            Daftar Nilai Tugas Layanan BK Kelas 7, 8, 9
           </h2>
           <p className="text-xs text-slate-500 mt-1">
-            SMP Negeri 7 Pasuruan • Penilaian Tugas 1, Tugas 2, dan Tugas Proyek Layanan BK.
+            SMP Negeri 7 Pasuruan • Penilaian Tugas 1, Tugas 2, dan Tugas Proyek Layanan BK Fase D.
           </p>
         </div>
 
@@ -301,7 +305,7 @@ export const StudentGradeTable: React.FC<StudentGradeTableProps> = ({
             onChange={(e) => setSelectedKelas(e.target.value)}
             className="w-full py-2 px-3 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-indigo-500"
           >
-            <option value="Semua">Filter Kelas: Semua Rombel 7 (7A - 7H)</option>
+            <option value="Semua">Filter Kelas: Semua Rombel (7, 8, 9)</option>
             {rombelList.map(r => (
               <option key={r} value={r}>Kelas {r}</option>
             ))}

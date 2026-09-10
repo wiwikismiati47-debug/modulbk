@@ -14,9 +14,9 @@ export default defineConfig(() => {
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon.svg', 'pwa-192x192.png', 'pwa-512x512.png', 'pwa-maskable-512x512.png'],
         manifest: {
           id: '/',
-          name: 'MODUL BK KELAS 7 SMPN 7 Pasuruan',
-          short_name: 'Modul BK 7',
-          description: 'Media Pembelajaran Interaktif Bimbingan & Konseling Kelas 7 SMPN 7 Pasuruan',
+          name: 'MODUL BK KELAS 7, 8, 9 SMPN 7 Pasuruan',
+          short_name: 'Modul BK 7, 8, 9',
+          description: 'Media Pembelajaran Interaktif Bimbingan & Konseling Kelas 7, 8, dan 9 SMPN 7 Pasuruan',
           theme_color: '#4f46e5',
           background_color: '#ffffff',
           display: 'standalone',

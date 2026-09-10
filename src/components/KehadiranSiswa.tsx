@@ -20,7 +20,11 @@ export const KehadiranSiswa: React.FC<KehadiranSiswaProps> = ({
   const [filterRombel, setFilterRombel] = useState('Semua');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const rombelList = ['7A', '7B', '7C', '7D', '7E', '7F', '7G', '7H'];
+  const rombelList = [
+    '7A', '7B', '7C', '7D', '7E', '7F', '7G', '7H',
+    '8A', '8B', '8C', '8D', '8E', '8F', '8G', '8H',
+    '9A', '9B', '9C', '9D', '9E', '9F', '9G', '9H'
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,11 +67,11 @@ export const KehadiranSiswa: React.FC<KehadiranSiswaProps> = ({
       <div className="bg-gradient-to-r from-emerald-800 to-teal-900 rounded-3xl p-8 text-white shadow-xl space-y-3">
         <div className="inline-flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full text-xs font-bold text-emerald-200">
           <Users className="w-3.5 h-3.5" />
-          <span>Sistem Absensi Mandiri Kelas 7</span>
+          <span>Sistem Absensi Mandiri Kelas 7, 8, 9</span>
         </div>
-        <h1 className="text-3xl font-extrabold tracking-tight">Kehadiran Siswa (8 Rombel)</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Kehadiran Siswa Rombel BK</h1>
         <p className="text-emerald-100 text-sm max-w-2xl">
-          Silakan isi daftar kehadiranmu sesuai dengan kelas (rombel) masing-masing (7A sampai 7H) pada setiap sesi layanan BK.
+          Silakan isi daftar kehadiranmu sesuai dengan jenjang dan rombel masing-masing (Kelas 7, 8, atau 9) pada setiap sesi layanan BK.
         </p>
       </div>
 
@@ -98,7 +102,7 @@ export const KehadiranSiswa: React.FC<KehadiranSiswaProps> = ({
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 uppercase">Pilih Rombel / Kelas (7A - 7H)</label>
+              <label className="text-xs font-bold text-slate-700 uppercase">Pilih Rombel / Kelas (7, 8, 9)</label>
               <select
                 value={rombel}
                 onChange={(e) => setRombel(e.target.value)}

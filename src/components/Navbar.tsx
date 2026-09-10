@@ -54,9 +54,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
               </div>
-              <h1 className="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-indigo-900 via-indigo-700 to-violet-800 bg-clip-text text-transparent tracking-tight">
-                MODUL BK KELAS 7
-              </h1>
+              <div className="flex items-center space-x-1.5 flex-wrap">
+                <h1 className="text-xl sm:text-2xl font-black bg-gradient-to-r from-indigo-900 via-indigo-700 to-violet-800 bg-clip-text text-transparent tracking-tight">
+                  MODUL BK
+                </h1>
+                <span className="px-2 py-0.5 rounded-lg bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-extrabold text-xs sm:text-sm tracking-wide shadow-xs">
+                  KELAS 7, 8, 9
+                </span>
+              </div>
             </div>
           </div>
 

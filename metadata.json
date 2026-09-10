@@ -1,6 +1,6 @@
 {
-  "name": "MODUL BK KELAS 7",
-  "description": "Media Pembelajaran Interaktif Bimbingan Konseling Kelas 7 dengan RPP Mendalam, Kuisioner Diagnostik, Video Interaktif, Materi Animasi, Latihan 30 Soal, Kuis TTS & Ular Tangga, serta Absensi 8 Rombel.",
+  "name": "MODUL BK KELAS 7, 8, 9",
+  "description": "Media Pembelajaran Interaktif Bimbingan Konseling Kelas 7, 8, dan 9 SMPN 7 Pasuruan dengan Kurikulum Merdeka & Pembelajaran Mendalam (Deep Learning), RPP Lengkap, Video Interaktif, Kuis TTS, Ular Tangga, Pemetaan Tugas Perkembangan, dan Rekap Nilai/Absensi 24 Rombel.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

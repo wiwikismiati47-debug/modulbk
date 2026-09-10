@@ -46,7 +46,11 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
     noAbsen: 1
   });
 
-  const rombelList = ['7A', '7B', '7C', '7D', '7E', '7F', '7G', '7H'];
+  const rombelList = [
+    '7A', '7B', '7C', '7D', '7E', '7F', '7G', '7H',
+    '8A', '8B', '8C', '8D', '8E', '8F', '8G', '8H',
+    '9A', '9B', '9C', '9D', '9E', '9F', '9G', '9H'
+  ];
 
   const filteredStudents = students.filter(s => {
     const matchKelas = selectedKelas === 'Semua' || s.kelas === selectedKelas;
@@ -221,7 +225,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
             Database Siswa SMPN 7 Pasuruan
           </h2>
           <p className="text-xs text-slate-500 mt-1">
-            Kelola daftar siswa 8 rombel (7A - 7H), unduh contoh template, serta import/export data.
+            Kelola daftar siswa rombel Kelas 7, 8, dan 9, unduh template CSV, serta import/export data.
           </p>
         </div>
 
@@ -284,7 +288,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
             onChange={(e) => setSelectedKelas(e.target.value)}
             className="w-full py-2 px-3 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-indigo-500"
           >
-            <option value="Semua">Filter Rombel: Semua Kelas 7 (7A - 7H)</option>
+            <option value="Semua">Filter Rombel: Semua Kelas (7, 8, 9)</option>
             {rombelList.map(r => (
               <option key={r} value={r}>Kelas {r}</option>
             ))}

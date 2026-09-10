@@ -1,4 +1,20 @@
 import { ModuleContent } from '../types';
+import { module9Istiqamah } from './kelas9/module9_istiqamah';
+import { module10TanggungJawab } from './kelas9/module10_tanggung_jawab';
+import { module11CemasUjian } from './kelas9/module11_cemas_ujian';
+import { module12StrategiBelajar } from './kelas9/module12_strategi_belajar';
+import { module13Kepemimpinan } from './kelas9/module13_kepemimpinan';
+import { module14PeranGender } from './kelas9/module14_peran_gender';
+import { module15KonsepDiri } from './kelas9/module15_konsep_diri';
+import { module16JalurLanjutan } from './kelas9/module16_jalur_lanjutan';
+import { module1ToleransiIslami } from './kelas8/module1_toleransi_islami';
+import { module2EtikaMedsos } from './kelas8/module2_etika_medsos';
+import { module3RegulasiEmosi } from './kelas8/module3_regulasi_emosi';
+import { module4BerpikirKritis } from './kelas8/module4_berpikir_kritis';
+import { module5KepekaanSosial } from './kelas8/module5_kepekaan_sosial';
+import { module6BatasanPergaulan } from './kelas8/module6_batasan_pergaulan';
+import { module7PercayaDiri } from './kelas8/module7_percaya_diri';
+import { module8PeminatanEkskul } from './kelas8/module8_peminatan_ekstrakurikuler';
 
 export const modulesData: ModuleContent[] = [
   {
@@ -9,6 +25,8 @@ export const modulesData: ModuleContent[] = [
     emoji: '🕌',
     warnaAesthetic: 'from-emerald-600 to-teal-700',
     deskripsiSingkat: 'Modul bimbingan klasikal mendalam untuk memperkuat keimanan, ketakwaan, pemahaman ibadah yang benar, habituasi akhlak mulia, serta penghayatan nilai-nilai Moderasi Beragama (toleransi, komitmen kebangsaan, anti-kekerasan, dan akomodatif kebudayaan lokal) dalam kehidupan sehari-hari di sekolah dan masyarakat.',
+    kelasTarget: ['7'],
+    fokusJenjang: 'Kelas 7 (Fase D)',
     rpp: {
       identitas: {
         satuanPendidikan: 'SMP Negeri 7 Pasuruan',
@@ -218,11 +236,13 @@ export const modulesData: ModuleContent[] = [
   {
     id: 'etika-pergaulan',
     nomor: 2,
-    judul: 'Etika Pergaulan di Sekolah Baru & Pencegahan Bullying',
-    subjudul: 'Membangun Hubungan Sosial yang Sehat, Empati, dan Lingkungan Sekolah Bebas Perundungan',
+    judul: 'Etika Pergaulan Remaja & Pencegahan Bullying',
+    subjudul: 'Membangun Hubungan Sosial yang Sehat, Empati, dan Lingkungan Sekolah Bebas Perundungan di Kelas 7 SMP Negeri 7 Pasuruan',
     emoji: '🤝',
     warnaAesthetic: 'from-blue-600 to-indigo-700',
-    deskripsiSingkat: 'Panduan lengkap bagi siswa kelas 7 untuk beradaptasi secara sosial di lingkungan SMP, mengenali batasan pergaulan yang sehat, serta aktif mencegah dan melawan segala bentuk perundungan (bullying).',
+    deskripsiSingkat: 'Panduan lengkap bagi peserta didik untuk beradaptasi secara sosial di lingkungan SMP, mengenali batasan pergaulan yang sehat, serta aktif mencegah dan melawan segala bentuk perundungan (bullying) baik fisik, verbal, relasional, maupun cyberbullying.',
+    kelasTarget: ['7'],
+    fokusJenjang: 'Kelas 7 (Fase D)',
     rpp: {
       identitas: {
         satuanPendidikan: 'SMP Negeri 7 Pasuruan',
@@ -362,11 +382,13 @@ export const modulesData: ModuleContent[] = [
   {
     id: 'emosi-stres',
     nomor: 3,
-    judul: 'Pengenalan Jenis Emosi & Adaptasi Stres Sekolah',
-    subjudul: 'Mengenal Gejolak Perasaan Remaja Awal serta Teknik Regulasi Diri dan Manajemen Stres Akademik',
+    judul: 'Pengenalan Jenis Emosi & Manajemen Stres Remaja',
+    subjudul: 'Mengenal Gejolak Perasaan Remaja serta Teknik Regulasi Diri dan Manajemen Stres Akademik di Kelas 7 SMP Negeri 7 Pasuruan',
     emoji: '🧠',
     warnaAesthetic: 'from-purple-600 to-indigo-800',
-    deskripsiSingkat: 'Modul bimbingan untuk membantu siswa mengenali spektrum emosi, memahami perubahan psikologis masa pubertas, serta menguasai teknik relaksasi dan koping stres menghadapi tekanan tugas di SMP.',
+    deskripsiSingkat: 'Modul bimbingan untuk membantu peserta didik mengenali spektrum emosi, memahami dinamika psikologis remaja, serta menguasai teknik relaksasi, mindfulness, dan koping stres menghadapi tekanan tugas dan ujian.',
+    kelasTarget: ['7'],
+    fokusJenjang: 'Kelas 7 (Fase D)',
     rpp: {
       identitas: {
         satuanPendidikan: 'SMP Negeri 7 Pasuruan',
@@ -487,11 +509,13 @@ export const modulesData: ModuleContent[] = [
   {
     id: 'gaya-belajar',
     nomor: 4,
-    judul: 'Pemetaan Gaya Belajar & Manajemen Waktu Belajar',
-    subjudul: 'Mengenal Modalitas Belajar Visual, Auditori, Kinestetik Serta Strategi Pengelolaan Waktu yang Efektif',
+    judul: 'Pemetaan Gaya Belajar & Manajemen Waktu Efektif',
+    subjudul: 'Mengenal Modalitas Belajar Visual, Auditori, Kinestetik Serta Strategi Pengelolaan Waktu di Kelas 7 SMP Negeri 7 Pasuruan',
     emoji: '📊',
     warnaAesthetic: 'from-amber-600 to-orange-700',
-    deskripsiSingkat: 'Modul panduan untuk membantu siswa kelas 7 mengenali gaya belajar pribadi mereka dan menyusun jadwal manajemen waktu harian menggunakan Matriks Prioritas dan Teknik Pomodoro.',
+    deskripsiSingkat: 'Modul panduan untuk membantu siswa mengenali gaya belajar pribadi (VAK) dan menyusun jadwal manajemen waktu harian menggunakan Matriks Prioritas Eisenhower dan Teknik Pomodoro.',
+    kelasTarget: ['7'],
+    fokusJenjang: 'Kelas 7 (Fase D)',
     rpp: {
       identitas: {
         satuanPendidikan: 'SMP Negeri 7 Pasuruan',
@@ -613,10 +637,12 @@ export const modulesData: ModuleContent[] = [
     id: 'penyesuaian-sosial',
     nomor: 5,
     judul: 'Penyesuaian Diri dengan Teman Sebaya & Kerja Sama Tim',
-    subjudul: 'Membangun Solidaritas Positif, Keterampilan Komunikasi Efektif, dan Kolaborasi Kelompok yang Harmonis',
+    subjudul: 'Membangun Solidaritas Positif, Keterampilan Komunikasi Efektif, dan Kolaborasi Kelompok Harmonis di Kelas 7 SMP Negeri 7 Pasuruan',
     emoji: '👥',
     warnaAesthetic: 'from-teal-600 to-cyan-800',
-    deskripsiSingkat: 'Modul bimbingan untuk membantu siswa kelas 7 membangun hubungan pertemanan yang sehat, menghindari kelompok pergaulan negatif, serta menguasai keterampilan kerja sama tim.',
+    deskripsiSingkat: 'Modul bimbingan untuk membantu peserta didik membangun hubungan pertemanan yang sehat, menghindari sirkel negatif, serta menguasai keterampilan kolaborasi dan kerja sama tim.',
+    kelasTarget: ['7'],
+    fokusJenjang: 'Kelas 7 (Fase D)',
     rpp: {
       identitas: {
         satuanPendidikan: 'SMP Negeri 7 Pasuruan',
@@ -737,11 +763,13 @@ export const modulesData: ModuleContent[] = [
   {
     id: 'pubertas-kesehatan',
     nomor: 6,
-    judul: 'Pengenalan Perubahan Fisik/Pubertas & Kebersihan Diri',
-    subjudul: 'Memahami Transisi Biologis Remaja Awal, Menjaga Kebersihan Tubuh, serta Kesehatan Reproduksi',
+    judul: 'Memahami Masa Pubertas & Kesehatan Reproduksi Remaja',
+    subjudul: 'Memahami Transisi Biologis Remaja, Menjaga Kebersihan Tubuh (PHBS), serta Kesehatan Reproduksi di Kelas 7 SMP Negeri 7 Pasuruan',
     emoji: '🌱',
     warnaAesthetic: 'from-emerald-700 to-green-900',
-    deskripsiSingkat: 'Modul bimbingan kesehatan untuk membantu siswa kelas 7 mengenali perubahan fisik masa pubertas, pentingnya menjaga kebersihan diri (personal hygiene), dan kesehatan reproduksi.',
+    deskripsiSingkat: 'Modul bimbingan kesehatan untuk membantu peserta didik mengenali perubahan fisik masa pubertas, pentingnya menjaga kebersihan diri (personal hygiene), pola hidup bersih dan sehat, serta kesehatan reproduksi remaja.',
+    kelasTarget: ['7'],
+    fokusJenjang: 'Kelas 7 (Fase D)',
     rpp: {
       identitas: {
         satuanPendidikan: 'SMP Negeri 7 Pasuruan',
@@ -862,11 +890,13 @@ export const modulesData: ModuleContent[] = [
   {
     id: 'self-awareness',
     nomor: 7,
-    judul: 'Mengenali Kelebihan & Kekurangan Diri (Self-Awareness)',
-    subjudul: 'Membangun Kesadaran Diri, Mengenal Potensi Positif, serta Menerima Kekurangan untuk Pertumbuhan',
+    judul: 'Mengenali Potensi Diri, Bakat, & Minat (Self-Awareness)',
+    subjudul: 'Membangun Kesadaran Diri, Mengenal Potensi Positif, serta Pemetaan Kekuatan Pribadi di Kelas 7 SMP Negeri 7 Pasuruan',
     emoji: '🪞',
     warnaAesthetic: 'from-indigo-700 to-blue-900',
-    deskripsiSingkat: 'Modul bimbingan untuk membantu siswa kelas 7 mengenali peta potensi diri (kekuatan dan kelemahan), membangun rasa percaya diri yang sehat, serta merumuskan tujuan hidup.',
+    deskripsiSingkat: 'Modul bimbingan untuk membantu peserta didik mengenali peta potensi diri (kekuatan dan kelemahan), bakat, minat, membangun rasa percaya diri yang sehat, serta merumuskan tujuan hidup.',
+    kelasTarget: ['7'],
+    fokusJenjang: 'Kelas 7 (Fase D)',
     rpp: {
       identitas: {
         satuanPendidikan: 'SMP Negeri 7 Pasuruan',
@@ -987,11 +1017,13 @@ export const modulesData: ModuleContent[] = [
   {
     id: 'karir-profesi',
     nomor: 8,
-    judul: 'Pengenalan Beragam Profesi & Hubungan Hobi dengan Cita-Cita',
-    subjudul: 'Eksplorasi Dunia Kerja Modern, Pemetaan Minat Bakat, serta Perencanaan Studi Lanjut Sejak Kelas 7',
+    judul: 'Eksplorasi Profesi, Studi Lanjut SMA/SMK & Perencanaan Karir',
+    subjudul: 'Eksplorasi Dunia Kerja Modern, Pemetaan Minat Bakat, serta Perencanaan Studi Lanjut di Kelas 7 SMP Negeri 7 Pasuruan',
     emoji: '🚀',
     warnaAesthetic: 'from-violet-700 to-purple-900',
-    deskripsiSingkat: 'Modul bimbingan karier untuk memperkenalkan ragam profesi masa kini, menghubungkan hobi dengan pilihan cita-cita, serta mempersiapkan peta jalan studi lanjut.',
+    deskripsiSingkat: 'Modul bimbingan karir komprehensif untuk memperkenalkan ragam profesi masa kini, menghubungkan hobi dengan pilihan cita-cita, serta mempersiapkan peta jalan studi lanjut (SMA/MA vs SMK) dan karir masa depan.',
+    kelasTarget: ['7'],
+    fokusJenjang: 'Kelas 7 (Fase D / Karir)',
     rpp: {
       identitas: {
         satuanPendidikan: 'SMP Negeri 7 Pasuruan',
@@ -1108,5 +1140,21 @@ export const modulesData: ModuleContent[] = [
       ]
     },
     permainanType: 'pencocokan'
-  }
+  },
+  module9Istiqamah,
+  module10TanggungJawab,
+  module11CemasUjian,
+  module12StrategiBelajar,
+  module13Kepemimpinan,
+  module14PeranGender,
+  module15KonsepDiri,
+  module16JalurLanjutan,
+  module1ToleransiIslami,
+  module2EtikaMedsos,
+  module3RegulasiEmosi,
+  module4BerpikirKritis,
+  module5KepekaanSosial,
+  module6BatasanPergaulan,
+  module7PercayaDiri,
+  module8PeminatanEkskul
 ];

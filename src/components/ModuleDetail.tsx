@@ -562,9 +562,20 @@ export const ModuleDetail: React.FC<ModuleDetailProps> = ({ module, onBack }) =>
               {module.emoji}
             </span>
             <div>
-              <span className="text-xs font-bold uppercase tracking-widest bg-white/20 px-3 py-1 rounded-full">
-                Modul {module.nomor} • Kelas 7
-              </span>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-xs font-bold uppercase tracking-widest bg-white/20 px-3 py-1 rounded-full">
+                  Modul {module.nomor}
+                </span>
+                {module.fokusJenjang ? (
+                  <span className="text-xs font-black uppercase tracking-wider bg-amber-400 text-slate-950 px-3 py-1 rounded-full shadow-sm">
+                    {module.fokusJenjang}
+                  </span>
+                ) : (
+                  <span className="text-xs font-bold uppercase tracking-widest bg-white/20 px-3 py-1 rounded-full">
+                    Fase D (SMP)
+                  </span>
+                )}
+              </div>
               <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight mt-1">
                 {module.judul}
               </h1>

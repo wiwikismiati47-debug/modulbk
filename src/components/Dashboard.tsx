@@ -45,10 +45,21 @@ export const Dashboard: React.FC<DashboardProps> = ({
   onDeleteGrade
 }) => {
   const [activeSubTab, setActiveSubTab] = useState<'ringkasan' | 'nilai' | 'siswa'>('ringkasan');
-  const rombels = ['7A', '7B', '7C', '7D', '7E', '7F', '7G', '7H'];
+  const [selectedJenjangFilter, setSelectedJenjangFilter] = useState<'all' | '7' | '8' | '9'>('all');
+
+  const allRombels = [
+    '7A', '7B', '7C', '7D', '7E', '7F', '7G', '7H',
+    '8A', '8B', '8C', '8D', '8E', '8F', '8G', '8H',
+    '9A', '9B', '9C', '9D', '9E', '9F', '9G', '9H'
+  ];
+
+  const filteredRombels = allRombels.filter((r) => {
+    if (selectedJenjangFilter === 'all') return true;
+    return r.startsWith(selectedJenjangFilter);
+  });
 
   // Calculate attendance per rombel
-  const rombelStats = rombels.map((r) => {
+  const rombelStats = filteredRombels.map((r) => {
     const list = attendanceRecords.filter((rec) => rec.rombel === r);
     const hadir = list.filter((l) => l.status === 'Hadir').length;
     const izin = list.filter((l) => l.status === 'Izin').length;
@@ -69,10 +80,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
             <span>Dashboard Guru & Layanan BK SMPN 7 Pasuruan</span>
           </div>
           <h1 className="text-3xl font-black tracking-tight">
-            Pusat Informasi & Penilaian Layanan BK Kelas 7 (7A - 7H)
+            Pusat Informasi & Penilaian Layanan BK Kelas 7, 8, 9
           </h1>
           <p className="text-indigo-200 text-sm max-w-2xl leading-relaxed">
-            Kelola rekapitulasi nilai tugas (Tugas 1, Tugas 2, Tugas Proyek), manajemen data siswa 8 rombel (7A s.d 7H), dan pantau grafik kehadiran siswa.
+            Kelola rekapitulasi nilai tugas (Tugas 1, Tugas 2, Tugas Proyek), manajemen data siswa rombel Kelas 7, 8, dan 9 SMPN 7 Pasuruan, serta pantau statistik kehadiran siswa.
           </p>
         </div>
 
@@ -132,8 +143,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
               <div className="space-y-1">
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Modul Aktif</p>
-                <h4 className="text-3xl font-black text-slate-900">8 Modul</h4>
-                <p className="text-xs text-emerald-600 font-semibold">100% Siap Layanan</p>
+                <h4 className="text-3xl font-black text-slate-900">{modulesData.length} Modul</h4>
+                <p className="text-xs text-emerald-600 font-semibold">Kelas 7, 8, 9 Fase D</p>
               </div>
               <div className="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
                 📚
@@ -144,7 +155,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <div className="space-y-1">
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Database Siswa</p>
                 <h4 className="text-3xl font-black text-slate-900">{students.length} Siswa</h4>
-                <p className="text-xs text-indigo-600 font-semibold">Terdaftar di 8 Rombel (7A - 7H)</p>
+                <p className="text-xs text-indigo-600 font-semibold">Rombel Kelas 7, 8, 9</p>
               </div>
               <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
                 👥
@@ -178,15 +189,39 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h3 className="text-xl font-bold text-slate-900">Rekap Kehadiran Siswa per Rombel (8 Kelas)</h3>
-                <p className="text-sm text-slate-500">Data kehadiran mandiri yang diisi oleh siswa kelas 7A sampai 7H.</p>
+                <h3 className="text-xl font-bold text-slate-900">Rekap Kehadiran Siswa per Rombel</h3>
+                <p className="text-sm text-slate-500">Data kehadiran mandiri siswa jenjang Kelas 7, 8, dan 9 SMPN 7 Pasuruan.</p>
               </div>
-              <button
-                onClick={() => onNavigateTab('kehadiran')}
-                className="text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-4 py-2 rounded-xl transition-colors"
-              >
-                Buka Buku Absensi Lengkap &rarr;
-              </button>
+              <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
+                  {(
+                    [
+                      { key: 'all', label: 'Semua' },
+                      { key: '7', label: 'Kelas 7' },
+                      { key: '8', label: 'Kelas 8' },
+                      { key: '9', label: 'Kelas 9' },
+                    ] as const
+                  ).map((filter) => (
+                    <button
+                      key={filter.key}
+                      onClick={() => setSelectedJenjangFilter(filter.key)}
+                      className={`px-2.5 py-1 rounded-lg transition-all ${
+                        selectedJenjangFilter === filter.key
+                          ? 'bg-indigo-600 text-white shadow-xs'
+                          : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      {filter.label}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  onClick={() => onNavigateTab('kehadiran')}
+                  className="text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-4 py-2 rounded-xl transition-colors"
+                >
+                  Buka Absensi Lengkap &rarr;
+                </button>
+              </div>
             </div>
 
             <div className="overflow-x-auto max-h-[480px] overflow-y-auto">
@@ -222,7 +257,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
           {/* Modules Quick List */}
           <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
-            <h3 className="text-xl font-bold text-slate-900">Status 8 Modul Pembelajaran BK Kelas 7</h3>
+            <h3 className="text-xl font-bold text-slate-900">Status {modulesData.length} Modul Pembelajaran BK Kelas 7, 8, 9</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {modulesData.map((m) => (
                 <div
@@ -235,10 +270,18 @@ export const Dashboard: React.FC<DashboardProps> = ({
                       {m.emoji}
                     </span>
                     <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-indigo-600">Modul {m.nomor}</span>
+                        {m.fokusJenjang && (
+                          <span className="text-[10px] font-black bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded">
+                            {m.fokusJenjang}
+                          </span>
+                        )}
+                      </div>
                       <h4 className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
-                        {m.nomor}. {m.judul}
+                        {m.judul}
                       </h4>
-                      <p className="text-xs text-slate-500">RPP Tabel • Kuis • Video • 30 Soal</p>
+                      <p className="text-xs text-slate-500">RPP Tabel • Kuis • Video • Soal Evaluasi</p>
                     </div>
                   </div>
                   <span className="text-xs font-bold bg-indigo-600 text-white px-3 py-1.5 rounded-xl shadow-sm">
